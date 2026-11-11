@@ -1,0 +1,712 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>파이썬 제어문 학습지 (1~3차시)</title>
+<style>
+:root{
+ --bg:#F4FAF3; --card:#FFFFFF; --ink:#18261F; --sub:#5F7368;
+ --line:#DCEBDC; --mint:#EAF6EA; --green:#3FA46A; --green-d:#2B7C4F;
+ --lime:#B7E08A; --orange:#D9613A; --code:#17241E; --codetxt:#E9F2EB;
+}
+*{box-sizing:border-box}
+body{margin:0;padding:0 16px 80px;background:var(--bg);color:var(--ink);
+ font-family:"Pretendard","맑은 고딕","Malgun Gothic",sans-serif;line-height:1.65;}
+.wrap{max-width:860px;margin:0 auto}
+header{padding:34px 0 22px;border-bottom:3px solid var(--green);margin-bottom:26px}
+.eyebrow{color:var(--green-d);font-size:13px;font-weight:700;letter-spacing:.06em;margin:0 0 6px}
+h1{margin:0;font-size:29px;letter-spacing:-.02em}
+.lead{color:var(--sub);font-size:14px;margin:8px 0 0}
+.idbar{display:flex;gap:10px;flex-wrap:wrap;margin-top:18px}
+.idbar input{flex:1;min-width:140px;padding:11px 13px;border:1px solid var(--line);
+ border-radius:9px;font-size:15px;font-family:inherit;background:#fff}
+section{background:var(--card);border:1px solid var(--line);border-radius:14px;
+ padding:24px 26px;margin-bottom:20px}
+section.concept{border-left:6px solid var(--lime)}
+section.goal{background:var(--mint);border-color:#CFE6CF}
+section.tipbox{background:#FBFDF5;border:1px dashed #C9E3A8}
+section.tipbox ul{margin:6px 0 0;padding-left:20px;font-size:14.5px}
+section.tipbox li{margin:3px 0}
+h2{font-size:19px;margin:0 0 4px;display:flex;align-items:center;gap:9px}
+h2 .num{display:inline-flex;align-items:center;justify-content:center;width:27px;height:27px;
+ border-radius:50%;background:var(--green);color:#fff;font-size:14px;flex:none}
+h2 .pill{display:inline-flex;align-items:center;justify-content:center;padding:2px 11px;height:27px;
+ border-radius:14px;background:var(--lime);color:var(--ink);font-size:13px;font-weight:800;flex:none}
+h3{font-size:16px;margin:20px 0 6px;color:var(--green-d)}
+.hint{color:var(--sub);font-size:13.5px;margin:0 0 16px;padding-left:36px}
+.txt{font-size:15px;margin:10px 0}
+.goals{margin:8px 0 10px;padding-left:20px;font-size:15px}
+.flow{display:flex;flex-wrap:wrap;gap:7px}
+.chip{background:#fff;border:1px solid #CFE6CF;border-radius:20px;padding:3px 12px;font-size:13px;color:var(--green-d);font-weight:700}
+.q{padding:13px 0;border-top:1px dashed var(--line)}
+.q:first-of-type{border-top:none}
+.qtext{font-size:15px;margin:0 0 9px}
+.qtext b{color:var(--green-d)}
+code,.mono{font-family:"D2Coding",Consolas,"Courier New",monospace}
+.inline{background:var(--mint);padding:2px 7px;border-radius:5px;font-size:14.5px}
+pre{background:var(--code);color:var(--codetxt);padding:15px 17px;border-radius:10px;
+ overflow-x:auto;font-size:14px;line-height:1.7;margin:10px 0;
+ font-family:"D2Coding",Consolas,"Courier New",monospace}
+pre .o{color:#8FD3A8}
+pre .c{color:#7E9488}
+pre .p{color:#6E8A7A;user-select:none}
+pre .k{color:#7FD1E8;font-weight:700}
+pre .b{color:#C9B8F5}
+pre .s{color:#F0C987}
+pre .n{color:#F5A98C}
+pre .err{color:#FF9B7A}
+pre input.blank{background:#2A3B33;color:#fff;border:1px dashed var(--lime);border-radius:5px;
+ font-family:"D2Coding",Consolas,monospace;font-size:14px;padding:0 5px;margin:0 2px}
+pre .mark.ok{color:#8FD3A8} pre .mark.no{color:#FF9B7A}
+.struct{background:#FBFDF5;border:2px dashed var(--lime);border-radius:10px;padding:13px 17px;margin:10px 0;
+ font-family:"D2Coding",Consolas,"Courier New",monospace;font-size:14.5px;white-space:pre;overflow-x:auto;line-height:1.8}
+.struct .ph{color:var(--green-d);font-style:normal;background:var(--mint);border-radius:4px;padding:0 3px}
+.struct .kw{color:#1C6E8C}
+table.tbl{border-collapse:collapse;width:100%;font-size:14px;margin:10px 0}
+table.tbl th{background:var(--mint);color:var(--green-d);font-weight:700}
+table.tbl th,table.tbl td{border:1px solid var(--line);padding:7px 10px;text-align:left;vertical-align:top}
+table.tbl td .mono,table.tbl td code{font-size:13.5px}
+table.trace td,table.trace th{text-align:center}
+table.trace input{width:64px;text-align:center;font-family:"D2Coding",Consolas,monospace;padding:5px 6px}
+.key{background:#F3FAE8;border-left:5px solid var(--lime);border-radius:8px;padding:11px 15px;font-size:14.5px;margin:12px 0}
+.tried{display:inline-flex;align-items:center;gap:7px;font-size:13.5px;color:var(--green-d);font-weight:700;
+ margin-top:8px;cursor:pointer;background:var(--mint);border-radius:8px;padding:6px 12px}
+select,input[type=text],textarea{font-family:inherit;font-size:15px;color:var(--ink);
+ border:1px solid var(--line);border-radius:8px;padding:9px 11px;background:#fff}
+select{min-width:260px;max-width:100%}
+input.ans{width:230px;font-family:"D2Coding",Consolas,monospace}
+input.ans.wide{width:100%;max-width:460px}
+textarea{width:100%;min-height:110px;resize:vertical;line-height:1.7}
+textarea.mono{font-family:"D2Coding",Consolas,monospace;font-size:14px}
+.ox{display:inline-flex;gap:8px;margin-left:6px}
+.ox label{cursor:pointer;border:1px solid var(--line);border-radius:8px;padding:5px 15px;
+ font-weight:700;font-size:15px;background:#fff;user-select:none}
+.ox input{display:none}
+.ox input:checked + span{color:var(--green-d)}
+.ox label.sel{border-color:var(--green);background:var(--mint)}
+.mark{margin-left:9px;font-weight:700;font-size:15px}
+.mark.ok{color:var(--green-d)} .mark.no{color:var(--orange)}
+.sol{display:none;margin-top:7px;font-size:13.5px;color:var(--sub);
+ background:var(--mint);border-radius:8px;padding:9px 12px}
+.sol.show{display:block}
+.btnrow{display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin-top:18px}
+button{font-family:inherit;font-size:15px;font-weight:700;border:none;border-radius:9px;
+ padding:12px 22px;cursor:pointer}
+button:disabled{opacity:.45;cursor:not-allowed}
+.primary{background:var(--green);color:#fff}
+.ghost{background:#fff;color:var(--green-d);border:1px solid var(--green)}
+.score{font-weight:700;color:var(--green-d);font-size:15px}
+.task{background:var(--mint);border-radius:10px;padding:15px 17px;margin:12px 0}
+.task ul{margin:8px 0 0;padding-left:20px;font-size:14.5px}
+.warn{background:#FCEFE9;border:1px solid #F0CDBB;color:#8A3A1B;border-radius:10px;
+ padding:13px 16px;font-size:14px;margin-top:14px}
+.warn pre{margin-bottom:0}
+.note{color:var(--sub);font-size:13px;margin-top:10px}
+.subq{margin-top:22px;padding-top:16px;border-top:1px dashed var(--line)}
+#status{font-size:14.5px;font-weight:700}
+footer{text-align:center;color:var(--sub);font-size:12.5px;padding:22px 0}
+@media (max-width:600px){section{padding:20px 16px}.hint{padding-left:0}}
+@media print{body{background:#fff}section{break-inside:avoid}.btnrow{display:none}}
+
+
+.topnav{position:sticky;top:0;z-index:20;background:rgba(244,250,243,.96);backdrop-filter:blur(4px);
+ border-bottom:1px solid var(--line);margin:0 -16px 22px;padding:10px 16px}
+.topnav .in{max-width:860px;margin:0 auto;display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.navbtn{background:#fff;color:var(--green-d);border:1px solid var(--line);border-radius:22px;padding:9px 18px;font-size:15px}
+.navbtn b{font-weight:800}
+.navbtn.on{background:var(--green);color:#fff;border-color:var(--green)}
+.navbtn .bd{display:inline-block;margin-left:6px;font-size:12px;font-weight:800;background:var(--lime);color:var(--ink);
+ border-radius:10px;padding:0 7px}
+.navbtn .bd:empty{display:none}
+.topnav .reset{margin-left:auto;background:none;border:none;color:var(--sub);font-size:13px;font-weight:600;padding:6px 4px;text-decoration:underline}
+.idbar .opt{color:var(--sub);font-size:12.5px;width:100%;margin:-2px 0 0}
+section.hero{background:var(--mint);border-color:#CFE6CF}
+section.hero .ltitle{font-size:25px;display:block;margin:0}
+section.hero .lead{margin-bottom:10px}
+.pager{display:flex;justify-content:space-between;margin:6px 0 4px}
+.lfoot{text-align:center;color:var(--sub);font-size:12.5px;padding:16px 0 0}
+.rcard{margin-top:18px;border:2px solid var(--green);border-radius:14px;padding:18px 20px;background:#fff}
+.rhead{display:flex;justify-content:space-between;flex-wrap:wrap;gap:6px;font-size:14px;color:var(--sub)}
+.rhead b{color:var(--green-d);font-size:16px}
+.rbig{font-size:38px;font-weight:800;color:var(--ink);margin:6px 0 2px}
+.rbig small{font-size:20px;color:var(--sub);font-weight:700}
+.rbig em{font-style:normal;font-size:18px;color:var(--green-d);margin-left:12px}
+.rbar{height:10px;background:var(--mint);border-radius:6px;overflow:hidden;margin-bottom:12px}
+.rbar i{display:block;height:100%;background:linear-gradient(90deg,var(--lime),var(--green))}
+.rcard td.c{text-align:center;font-weight:700;white-space:nowrap}
+.rline{font-size:14px;margin:8px 0}
+.wchip{display:inline-block;font-size:12.5px;border:1px solid var(--line);border-radius:12px;padding:1px 9px;margin:2px 3px;color:var(--sub)}
+.wchip.ok{background:var(--mint);color:var(--green-d);border-color:#CFE6CF;font-weight:700}
+.rmsg{background:#F3FAE8;border-left:5px solid var(--lime);border-radius:8px;padding:10px 14px;font-size:14.5px;margin:12px 0 0}
+@media (max-width:480px){.navbtn .t{display:none}.navbtn{padding:8px 14px}}
+@media print{.topnav,.pager{display:none}}
+
+</style>
+</head>
+<body>
+<nav class="topnav"><div class="in"><button class="navbtn" data-l="1" onclick="go(1)"><b>1차시</b><span class="t"> 변수 · if문</span><span class="bd" id="badge-1"></span></button><button class="navbtn" data-l="2" onclick="go(2)"><b>2차시</b><span class="t"> while문</span><span class="bd" id="badge-2"></span></button><button class="navbtn" data-l="3" onclick="go(3)"><b>3차시</b><span class="t"> for문</span><span class="bd" id="badge-3"></span></button><button class="reset" onclick="clearAll()" title="다음 사람이 이 컴퓨터를 쓸 때">처음부터 (모두 지우기)</button></div></nav>
+<div class="wrap">
+<header>
+ <p class="eyebrow">중학교 정보 · 파이썬 기초 · 03장 제어문</p>
+ <h1>파이썬 제어문 학습지</h1>
+ <p class="lead">1차시 변수 정리 &amp; if문 · 2차시 while문 · 3차시 for문 — 위의 버튼으로 차시를 골라 공부하세요.</p>
+ <div class="idbar">
+  <input type="text" id="stuClass" placeholder="학반 (예: 3-4)">
+  <input type="text" id="stuNo" placeholder="번호">
+  <input type="text" id="stuName" placeholder="이름">
+  <p class="opt">이름은 [결과 보기] 화면에 함께 표시됩니다.</p>
+ </div>
+</header>
+<div class="lesson" data-l="1"><section class="hero"><p class="eyebrow">중학교 정보 · 파이썬 기초 · 제어문 1/3차시</p><h2 class="ltitle">변수 정리 &amp; if문</h2><p class="lead">값에 이름을 붙이는 변수를 짧게 정리하고, 조건에 따라 다른 일을 하는 if문을 배웁니다.</p><ul class="goals"><li>변수와 <b>=</b>(대입)의 뜻을 설명할 수 있다.</li><li>비교·논리 연산자로 <b>조건</b>을 만들 수 있다.</li><li><b>if · elif · else</b>로 상황에 따라 다르게 동작하는 코드를 작성할 수 있다.</li></ul><div class="flow"><span class="chip">변수 정리 5′</span><span class="chip">if문 개념 15′</span><span class="chip">개념 확인 10′</span><span class="chip">코드 실습 12′</span><span class="chip">정리·결과 보기 3′</span></div></section><section class="tipbox"><h2><span class="pill">TIP</span>IDLE 셸에서 여러 줄 코드 입력하기</h2><ul><li>콜론(<b>:</b>)을 치고 Enter → IDLE이 <b>4칸 들여쓰기</b>를 자동으로 해 줍니다.</li><li><b>else</b>·<b>elif</b>처럼 앞으로 나와야 하는 줄은 <b>Backspace</b>로 들여쓰기를 지운 뒤 입력하세요.</li><li>블록을 다 썼으면 <b>빈 줄에서 Enter를 한 번 더</b> → 그때 실행됩니다.</li><li>화면의 <span class="inline mono">...</span>은 "줄이 이어진다"는 IDLE 표시예요. 직접 입력하지 않습니다.</li><li><span class="inline mono">&gt;&gt;&gt;</span> 하나에는 문장 하나만! 변수를 만드는 줄과 if문은 <b>따로따로</b> 입력합니다.</li></ul></section><section class="concept"><h2><span class="pill">개념 ①</span>변수 한눈에 정리</h2><p class="hint">지난 시간에 배운 내용을 짧게 되짚어 봅니다.</p><p class="txt">변수는 값에 붙이는 <b>이름표</b>입니다. 이름표를 붙여 두면 그 값을 이름으로 다시 꺼내 쓸 수 있어요.</p><pre class=""><span class="p">&gt;&gt;&gt; </span>score = <span class="n">80</span>
+<span class="p">&gt;&gt;&gt; </span>score
+<span class="o">80</span>
+<span class="p">&gt;&gt;&gt; </span>score = score + <span class="n">5</span>
+<span class="p">&gt;&gt;&gt; </span>score
+<span class="o">85</span></pre><table class="tbl"><thead><tr><th>이렇게 쓰면</th><th>뜻</th></tr></thead><tbody><tr><td><span class="inline mono">score = 80</span></td><td>80이라는 값에 score라는 이름표를 붙인다 (<b>=</b>는 "같다"가 아니라 "넣는다")</td></tr><tr><td><span class="inline mono">score = score + 5</span></td><td>지금 값(80)에 5를 더해서 다시 score에 넣는다 → 85</td></tr><tr><td><span class="inline mono">a, b = 3, 7</span></td><td>여러 변수를 한 번에 만든다</td></tr><tr><td><span class="inline mono">a, b = b, a</span></td><td>두 변수의 값을 맞바꾼다</td></tr></tbody></table><pre class=""><span class="p">&gt;&gt;&gt; </span>a, b = <span class="n">3</span>, <span class="n">7</span>
+<span class="p">&gt;&gt;&gt; </span>a, b = b, a
+<span class="p">&gt;&gt;&gt; </span>a
+<span class="o">7</span>
+<span class="p">&gt;&gt;&gt; </span>b
+<span class="o">3</span></pre><div class="key"><b>변수 이름 규칙</b> — 영문자·숫자·밑줄(_)로 만들고, <b>숫자로 시작할 수 없어요</b>. <span class="inline mono">if</span>, <span class="inline mono">for</span> 같은 예약어도 쓸 수 없고, 대문자와 소문자는 다른 이름이에요 (<span class="inline mono">Score</span> ≠ <span class="inline mono">score</span>).</div><label class="tried"><input type="checkbox" class="tryck" id="L1-try0"> IDLE에서 직접 쳐 봤어요</label></section><section class="concept"><h2><span class="pill">개념 ②</span>if문의 기본 구조</h2><p class="txt">"비가 오면 우산을 챙기고, 아니면 모자를 쓴다"처럼 <b>조건에 따라 할 일을 고르는</b> 문장이 if문입니다.</p><div class="struct"><b class="kw">if</b> <i class="ph">조건문</i>:
+    <i class="ph">조건이 참일 때 할 일 1</i>
+    <i class="ph">조건이 참일 때 할 일 2</i>
+<b class="kw">else</b>:
+    <i class="ph">조건이 거짓일 때 할 일</i></div><pre class=""><span class="p">&gt;&gt;&gt; </span>rain = <span class="k">True</span>
+<span class="p">&gt;&gt;&gt; </span><span class="k">if</span> rain:
+<span class="p">... </span>    <span class="b">print</span>(<span class="s">&quot;우산을 챙긴다&quot;</span>)
+<span class="p">... </span><span class="k">else</span>:
+<span class="p">... </span>    <span class="b">print</span>(<span class="s">&quot;모자를 쓴다&quot;</span>)
+<span class="p">... </span>
+<span class="o">우산을 챙긴다</span></pre><div class="key"><b>꼭 지켜야 할 3가지</b><br>① 조건 뒤, else 뒤에는 <b>콜론(:)</b><br>② 조건에 딸린 문장은 <b>들여쓰기</b> (공백 4칸)<br>③ 같은 블록의 문장은 들여쓰기 칸 수가 <b>모두 같아야</b> 해요</div><div class="warn">들여쓰기 칸 수가 들쭉날쭉하면 오류가 납니다.<pre><span class="p">&gt;&gt;&gt; </span><span class="k">if</span> rain:
+<span class="p">... </span>    <span class="b">print</span>(<span class="s">&quot;우산을 챙긴다&quot;</span>)
+<span class="p">... </span>      <span class="b">print</span>(<span class="s">&quot;장화를 신는다&quot;</span>)
+<span class="err">IndentationError: unexpected indent</span></pre></div><label class="tried"><input type="checkbox" class="tryck" id="L1-try1"> IDLE에서 직접 쳐 봤어요</label></section><section class="concept"><h2><span class="pill">개념 ③</span>조건 만들기 — 비교·논리·in 연산자</h2><p class="hint">조건문의 결과는 언제나 True(참) 또는 False(거짓)입니다.</p><h3>비교 연산자</h3><table class="tbl"><thead><tr><th>연산자</th><th>뜻</th><th>예 (x = 5일 때)</th><th>결과</th></tr></thead><tbody><tr><td><span class="inline mono">x &lt; y</span></td><td>x가 y보다 작다</td><td><span class="inline mono">x &lt; 3</span></td><td>False</td></tr><tr><td><span class="inline mono">x &gt; y</span></td><td>x가 y보다 크다</td><td><span class="inline mono">x &gt; 3</span></td><td>True</td></tr><tr><td><span class="inline mono">x == y</span></td><td>x와 y가 같다</td><td><span class="inline mono">x == 5</span></td><td>True</td></tr><tr><td><span class="inline mono">x != y</span></td><td>x와 y가 같지 않다</td><td><span class="inline mono">x != 5</span></td><td>False</td></tr><tr><td><span class="inline mono">x &gt;= y</span></td><td>x가 y보다 크거나 같다</td><td><span class="inline mono">x &gt;= 5</span></td><td>True</td></tr><tr><td><span class="inline mono">x &lt;= y</span></td><td>x가 y보다 작거나 같다</td><td><span class="inline mono">x &lt;= 4</span></td><td>False</td></tr></tbody></table><div class="warn"><b>=</b> 는 값을 <b>넣는</b> 것, <b>==</b> 는 같은지 <b>비교</b>하는 것! <span class="mono">if x = 5:</span> 처럼 쓰면 오류가 납니다.</div><pre class=""><span class="p">&gt;&gt;&gt; </span>money = <span class="n">2000</span>
+<span class="p">&gt;&gt;&gt; </span>money &gt;= <span class="n">3000</span>
+<span class="o">False</span>
+<span class="p">&gt;&gt;&gt; </span><span class="k">if</span> money &gt;= <span class="n">3000</span>:
+<span class="p">... </span>    <span class="b">print</span>(<span class="s">&quot;택시를 탄다&quot;</span>)
+<span class="p">... </span><span class="k">else</span>:
+<span class="p">... </span>    <span class="b">print</span>(<span class="s">&quot;걸어간다&quot;</span>)
+<span class="p">... </span>
+<span class="o">걸어간다</span></pre><h3>논리 연산자 — 조건 여러 개 묶기</h3><table class="tbl"><thead><tr><th>연산자</th><th>뜻</th></tr></thead><tbody><tr><td><span class="inline mono">x or y</span></td><td>둘 중 <b>하나라도</b> 참이면 참</td></tr><tr><td><span class="inline mono">x and y</span></td><td><b>둘 다</b> 참이어야 참</td></tr><tr><td><span class="inline mono">not x</span></td><td>참 ↔ 거짓을 <b>뒤집는다</b></td></tr></tbody></table><pre class=""><span class="p">&gt;&gt;&gt; </span>money = <span class="n">2000</span>
+<span class="p">&gt;&gt;&gt; </span>card = <span class="k">True</span>
+<span class="p">&gt;&gt;&gt; </span><span class="k">if</span> money &gt;= <span class="n">3000</span> <span class="k">or</span> card:
+<span class="p">... </span>    <span class="b">print</span>(<span class="s">&quot;택시를 탄다&quot;</span>)
+<span class="p">... </span><span class="k">else</span>:
+<span class="p">... </span>    <span class="b">print</span>(<span class="s">&quot;걸어간다&quot;</span>)
+<span class="p">... </span>
+<span class="o">택시를 탄다</span></pre><h3>in · not in — 안에 들어 있는지 확인하기</h3><p class="txt">리스트·튜플·문자열 안에 어떤 값이 있으면 <span class="inline mono">in</span>은 True, <span class="inline mono">not in</span>은 False가 됩니다. 할 일이 없으면 <b>else는 생략</b>해도 돼요.</p><pre class=""><span class="p">&gt;&gt;&gt; </span>bag = [<span class="s">&quot;필통&quot;</span>, <span class="s">&quot;교과서&quot;</span>, <span class="s">&quot;휴대폰&quot;</span>]
+<span class="p">&gt;&gt;&gt; </span><span class="s">&quot;휴대폰&quot;</span> <span class="k">in</span> bag
+<span class="o">True</span>
+<span class="p">&gt;&gt;&gt; </span><span class="k">if</span> <span class="s">&quot;휴대폰&quot;</span> <span class="k">in</span> bag:
+<span class="p">... </span>    <span class="b">print</span>(<span class="s">&quot;휴대폰은 수업 전에 제출하세요&quot;</span>)
+<span class="p">... </span>
+<span class="o">휴대폰은 수업 전에 제출하세요</span></pre><label class="tried"><input type="checkbox" class="tryck" id="L1-try2"> IDLE에서 직접 쳐 봤어요</label></section><section class="concept"><h2><span class="pill">개념 ④</span>elif — 여러 조건 중 하나 고르기</h2><div class="struct"><b class="kw">if</b> <i class="ph">조건1</i>:
+    <i class="ph">조건1이 참일 때</i>
+<b class="kw">elif</b> <i class="ph">조건2</i>:
+    <i class="ph">조건1은 거짓이고 조건2가 참일 때</i>
+<b class="kw">else</b>:
+    <i class="ph">모든 조건이 거짓일 때</i></div><pre class=""><span class="p">&gt;&gt;&gt; </span>score = <span class="n">83</span>
+<span class="p">&gt;&gt;&gt; </span><span class="k">if</span> score &gt;= <span class="n">90</span>:
+<span class="p">... </span>    <span class="b">print</span>(<span class="s">&quot;A&quot;</span>)
+<span class="p">... </span><span class="k">elif</span> score &gt;= <span class="n">80</span>:
+<span class="p">... </span>    <span class="b">print</span>(<span class="s">&quot;B&quot;</span>)
+<span class="p">... </span><span class="k">elif</span> score &gt;= <span class="n">70</span>:
+<span class="p">... </span>    <span class="b">print</span>(<span class="s">&quot;C&quot;</span>)
+<span class="p">... </span><span class="k">else</span>:
+<span class="p">... </span>    <span class="b">print</span>(<span class="s">&quot;D&quot;</span>)
+<span class="p">... </span>
+<span class="o">B</span></pre><div class="key">위에서부터 차례로 검사해서 <b>처음으로 참이 된 블록 하나만</b> 실행하고 if문을 끝냅니다. 83은 70 이상이기도 하지만, 이미 <span class="mono">score &gt;= 80</span>에서 걸렸기 때문에 "C"는 출력되지 않아요. 그래서 <b>조건의 순서가 중요</b>합니다. elif는 몇 개든 쓸 수 있어요.</div><label class="tried"><input type="checkbox" class="tryck" id="L1-try3"> IDLE에서 직접 쳐 봤어요</label></section><section class="concept"><h2><span class="pill">개념 ⑤</span>pass와 한 줄 if (조건부 표현식)</h2><p class="hint">알아 두면 편리한 두 가지 문법입니다.</p><h3>pass — 아무것도 하지 않기</h3><p class="txt">조건이 참일 때 할 일이 없더라도 블록을 비워 둘 수는 없어요. 이럴 때 자리만 채우는 것이 <span class="inline mono">pass</span>입니다.</p><pre class=""><span class="p">&gt;&gt;&gt; </span>pocket = [<span class="s">&quot;지갑&quot;</span>, <span class="s">&quot;휴대폰&quot;</span>]
+<span class="p">&gt;&gt;&gt; </span><span class="k">if</span> <span class="s">&quot;휴대폰&quot;</span> <span class="k">in</span> pocket:
+<span class="p">... </span>    <span class="k">pass</span>
+<span class="p">... </span><span class="k">else</span>:
+<span class="p">... </span>    <span class="b">print</span>(<span class="s">&quot;휴대폰을 챙기세요&quot;</span>)
+<span class="p">... </span></pre><p class="txt">휴대폰이 있으니 아무것도 출력되지 않습니다.</p><h3>조건부 표현식 — 한 줄로 값 고르기</h3><div class="struct"><i class="ph">변수</i> = <i class="ph">참일 때 값</i> <b class="kw">if</b> <i class="ph">조건</i> <b class="kw">else</b> <i class="ph">거짓일 때 값</i></div><pre class=""><span class="p">&gt;&gt;&gt; </span>score = <span class="n">55</span>
+<span class="p">&gt;&gt;&gt; </span>result = <span class="s">&quot;통과&quot;</span> <span class="k">if</span> score &gt;= <span class="n">60</span> <span class="k">else</span> <span class="s">&quot;재도전&quot;</span>
+<span class="p">&gt;&gt;&gt; </span>result
+<span class="o">&#x27;재도전&#x27;</span></pre><label class="tried"><input type="checkbox" class="tryck" id="L1-try4"> IDLE에서 직접 쳐 봤어요</label></section><section><h2><span class="num">1</span>연산자와 뜻 짝짓기</h2><p class="hint">각 연산자의 뜻을 골라 보세요. (필요 없는 보기가 2개 있어요)</p><div class="q"><p class="qtext"><b>1.</b> <span class="inline mono">==</span><span class="mark" id="mk-L1-m0"></span></p><select id="L1-m0"><option value="">— 고르세요 —</option><option value="0">왼쪽이 크거나 같으면 참</option><option value="1">참과 거짓을 뒤집는다</option><option value="2">두 값이 같으면 참</option><option value="3">두 값이 다르면 참</option><option value="4">하나라도 참이면 참</option><option value="5">둘 다 참이어야 참</option><option value="6">왼쪽이 작으면 참</option><option value="7">왼쪽이 작거나 같으면 참</option><option value="8">값을 변수에 넣는다</option><option value="9">안에 들어 있으면 참</option></select></div><div class="q"><p class="qtext"><b>2.</b> <span class="inline mono">!=</span><span class="mark" id="mk-L1-m1"></span></p><select id="L1-m1"><option value="">— 고르세요 —</option><option value="0">왼쪽이 크거나 같으면 참</option><option value="1">참과 거짓을 뒤집는다</option><option value="2">두 값이 같으면 참</option><option value="3">두 값이 다르면 참</option><option value="4">하나라도 참이면 참</option><option value="5">둘 다 참이어야 참</option><option value="6">왼쪽이 작으면 참</option><option value="7">왼쪽이 작거나 같으면 참</option><option value="8">값을 변수에 넣는다</option><option value="9">안에 들어 있으면 참</option></select></div><div class="q"><p class="qtext"><b>3.</b> <span class="inline mono">&gt;=</span><span class="mark" id="mk-L1-m2"></span></p><select id="L1-m2"><option value="">— 고르세요 —</option><option value="0">왼쪽이 크거나 같으면 참</option><option value="1">참과 거짓을 뒤집는다</option><option value="2">두 값이 같으면 참</option><option value="3">두 값이 다르면 참</option><option value="4">하나라도 참이면 참</option><option value="5">둘 다 참이어야 참</option><option value="6">왼쪽이 작으면 참</option><option value="7">왼쪽이 작거나 같으면 참</option><option value="8">값을 변수에 넣는다</option><option value="9">안에 들어 있으면 참</option></select></div><div class="q"><p class="qtext"><b>4.</b> <span class="inline mono">&lt;</span><span class="mark" id="mk-L1-m3"></span></p><select id="L1-m3"><option value="">— 고르세요 —</option><option value="0">왼쪽이 크거나 같으면 참</option><option value="1">참과 거짓을 뒤집는다</option><option value="2">두 값이 같으면 참</option><option value="3">두 값이 다르면 참</option><option value="4">하나라도 참이면 참</option><option value="5">둘 다 참이어야 참</option><option value="6">왼쪽이 작으면 참</option><option value="7">왼쪽이 작거나 같으면 참</option><option value="8">값을 변수에 넣는다</option><option value="9">안에 들어 있으면 참</option></select></div><div class="q"><p class="qtext"><b>5.</b> <span class="inline mono">and</span><span class="mark" id="mk-L1-m4"></span></p><select id="L1-m4"><option value="">— 고르세요 —</option><option value="0">왼쪽이 크거나 같으면 참</option><option value="1">참과 거짓을 뒤집는다</option><option value="2">두 값이 같으면 참</option><option value="3">두 값이 다르면 참</option><option value="4">하나라도 참이면 참</option><option value="5">둘 다 참이어야 참</option><option value="6">왼쪽이 작으면 참</option><option value="7">왼쪽이 작거나 같으면 참</option><option value="8">값을 변수에 넣는다</option><option value="9">안에 들어 있으면 참</option></select></div><div class="q"><p class="qtext"><b>6.</b> <span class="inline mono">or</span><span class="mark" id="mk-L1-m5"></span></p><select id="L1-m5"><option value="">— 고르세요 —</option><option value="0">왼쪽이 크거나 같으면 참</option><option value="1">참과 거짓을 뒤집는다</option><option value="2">두 값이 같으면 참</option><option value="3">두 값이 다르면 참</option><option value="4">하나라도 참이면 참</option><option value="5">둘 다 참이어야 참</option><option value="6">왼쪽이 작으면 참</option><option value="7">왼쪽이 작거나 같으면 참</option><option value="8">값을 변수에 넣는다</option><option value="9">안에 들어 있으면 참</option></select></div><div class="q"><p class="qtext"><b>7.</b> <span class="inline mono">not</span><span class="mark" id="mk-L1-m6"></span></p><select id="L1-m6"><option value="">— 고르세요 —</option><option value="0">왼쪽이 크거나 같으면 참</option><option value="1">참과 거짓을 뒤집는다</option><option value="2">두 값이 같으면 참</option><option value="3">두 값이 다르면 참</option><option value="4">하나라도 참이면 참</option><option value="5">둘 다 참이어야 참</option><option value="6">왼쪽이 작으면 참</option><option value="7">왼쪽이 작거나 같으면 참</option><option value="8">값을 변수에 넣는다</option><option value="9">안에 들어 있으면 참</option></select></div><div class="q"><p class="qtext"><b>8.</b> <span class="inline mono">in</span><span class="mark" id="mk-L1-m7"></span></p><select id="L1-m7"><option value="">— 고르세요 —</option><option value="0">왼쪽이 크거나 같으면 참</option><option value="1">참과 거짓을 뒤집는다</option><option value="2">두 값이 같으면 참</option><option value="3">두 값이 다르면 참</option><option value="4">하나라도 참이면 참</option><option value="5">둘 다 참이어야 참</option><option value="6">왼쪽이 작으면 참</option><option value="7">왼쪽이 작거나 같으면 참</option><option value="8">값을 변수에 넣는다</option><option value="9">안에 들어 있으면 참</option></select></div><div class="btnrow"><button class="primary" onclick="grade(1,'m')">채점하기</button><span class="score" id="score-L1-m"></span></div></section><section><h2><span class="num">2</span>맞으면 O, 틀리면 X</h2><p class="hint">설명이 맞는지 판단해 보세요.</p><div class="q"><p class="qtext"><b>1.</b> <span class="mono">a = 3</span>에서 <b>=</b>는 a와 3이 같다는 뜻이다.<span class="ox"><label><input type="radio" name="L1-o0" value="O"><span>O</span></label><label><input type="radio" name="L1-o0" value="X"><span>X</span></label></span><span class="mark" id="mk-L1-o0"></span></p></div><div class="q"><p class="qtext"><b>2.</b> <span class="mono">2nd_score</span>는 변수 이름으로 쓸 수 있다.<span class="ox"><label><input type="radio" name="L1-o1" value="O"><span>O</span></label><label><input type="radio" name="L1-o1" value="X"><span>X</span></label></span><span class="mark" id="mk-L1-o1"></span></p></div><div class="q"><p class="qtext"><b>3.</b> if문의 조건 뒤에는 반드시 콜론(:)을 붙인다.<span class="ox"><label><input type="radio" name="L1-o2" value="O"><span>O</span></label><label><input type="radio" name="L1-o2" value="X"><span>X</span></label></span><span class="mark" id="mk-L1-o2"></span></p></div><div class="q"><p class="qtext"><b>4.</b> 같은 블록 안의 문장은 들여쓰기 칸 수가 같아야 한다.<span class="ox"><label><input type="radio" name="L1-o3" value="O"><span>O</span></label><label><input type="radio" name="L1-o3" value="X"><span>X</span></label></span><span class="mark" id="mk-L1-o3"></span></p></div><div class="q"><p class="qtext"><b>5.</b> <span class="mono">x == 5</span>는 x에 5를 넣는 문장이다.<span class="ox"><label><input type="radio" name="L1-o4" value="O"><span>O</span></label><label><input type="radio" name="L1-o4" value="X"><span>X</span></label></span><span class="mark" id="mk-L1-o4"></span></p></div><div class="q"><p class="qtext"><b>6.</b> if-elif-else에서 참인 조건이 여러 개면 참인 블록이 모두 실행된다.<span class="ox"><label><input type="radio" name="L1-o5" value="O"><span>O</span></label><label><input type="radio" name="L1-o5" value="X"><span>X</span></label></span><span class="mark" id="mk-L1-o5"></span></p></div><div class="q"><p class="qtext"><b>7.</b> <span class="mono">"a" in "apple"</span>의 결과는 True이다.<span class="ox"><label><input type="radio" name="L1-o6" value="O"><span>O</span></label><label><input type="radio" name="L1-o6" value="X"><span>X</span></label></span><span class="mark" id="mk-L1-o6"></span></p></div><div class="btnrow"><button class="primary" onclick="grade(1,'o')">채점하기</button><span class="score" id="score-L1-o"></span></div></section><section><h2><span class="num">3</span>출력 결과 예상하기</h2><p class="hint">실행하기 전에 먼저 예상해서 적고, 채점한 뒤 IDLE 셸에서 직접 확인해 보세요.</p><div class="q"><p class="qtext"><b>1.</b> 출력 결과는?<span class="mark" id="mk-L1-p0"></span></p><pre class=""><span class="p">&gt;&gt;&gt; </span>x = <span class="n">7</span>
+<span class="p">&gt;&gt;&gt; </span><span class="k">if</span> x % <span class="n">2</span> == <span class="n">0</span>:
+<span class="p">... </span>    <span class="b">print</span>(<span class="s">&quot;짝수&quot;</span>)
+<span class="p">... </span><span class="k">else</span>:
+<span class="p">... </span>    <span class="b">print</span>(<span class="s">&quot;홀수&quot;</span>)
+<span class="p">... </span></pre><input type="text" class="ans wide mono" id="L1-p0" placeholder="출력 결과 (여러 줄이면 띄어쓰기로 구분)" autocomplete="off"><div class="sol" data-sol="L1-p">정답 <b class="mono">홀수</b> — 7을 2로 나눈 나머지는 1 → 조건이 거짓 → else 블록 실행.</div></div><div class="q"><p class="qtext"><b>2.</b> 출력 결과는?<span class="mark" id="mk-L1-p1"></span></p><pre class=""><span class="p">&gt;&gt;&gt; </span>age = <span class="n">15</span>
+<span class="p">&gt;&gt;&gt; </span>ticket = <span class="k">False</span>
+<span class="p">&gt;&gt;&gt; </span><span class="k">if</span> age &gt;= <span class="n">14</span> <span class="k">and</span> ticket:
+<span class="p">... </span>    <span class="b">print</span>(<span class="s">&quot;입장 가능&quot;</span>)
+<span class="p">... </span><span class="k">else</span>:
+<span class="p">... </span>    <span class="b">print</span>(<span class="s">&quot;입장 불가&quot;</span>)
+<span class="p">... </span></pre><input type="text" class="ans wide mono" id="L1-p1" placeholder="출력 결과 (여러 줄이면 띄어쓰기로 구분)" autocomplete="off"><div class="sol" data-sol="L1-p">정답 <b class="mono">입장 불가</b> — and는 둘 다 참이어야 참. ticket이 False라서 전체가 거짓.</div></div><div class="q"><p class="qtext"><b>3.</b> 출력 결과는?<span class="mark" id="mk-L1-p2"></span></p><pre class=""><span class="p">&gt;&gt;&gt; </span>temp = <span class="n">31</span>
+<span class="p">&gt;&gt;&gt; </span><span class="k">if</span> temp &gt;= <span class="n">30</span> <span class="k">or</span> temp &lt;= <span class="n">0</span>:
+<span class="p">... </span>    <span class="b">print</span>(<span class="s">&quot;야외 수업 취소&quot;</span>)
+<span class="p">... </span><span class="k">else</span>:
+<span class="p">... </span>    <span class="b">print</span>(<span class="s">&quot;야외 수업 진행&quot;</span>)
+<span class="p">... </span></pre><input type="text" class="ans wide mono" id="L1-p2" placeholder="출력 결과 (여러 줄이면 띄어쓰기로 구분)" autocomplete="off"><div class="sol" data-sol="L1-p">정답 <b class="mono">야외 수업 취소</b> — or는 하나만 참이어도 참. 31 >= 30이 참.</div></div><div class="q"><p class="qtext"><b>4.</b> 출력 결과는?<span class="mark" id="mk-L1-p3"></span></p><pre class=""><span class="p">&gt;&gt;&gt; </span>n = <span class="n">0</span>
+<span class="p">&gt;&gt;&gt; </span><span class="k">if</span> n &gt; <span class="n">0</span>:
+<span class="p">... </span>    <span class="b">print</span>(<span class="s">&quot;양수&quot;</span>)
+<span class="p">... </span><span class="k">elif</span> n &lt; <span class="n">0</span>:
+<span class="p">... </span>    <span class="b">print</span>(<span class="s">&quot;음수&quot;</span>)
+<span class="p">... </span><span class="k">else</span>:
+<span class="p">... </span>    <span class="b">print</span>(<span class="s">&quot;영&quot;</span>)
+<span class="p">... </span></pre><input type="text" class="ans wide mono" id="L1-p3" placeholder="출력 결과 (여러 줄이면 띄어쓰기로 구분)" autocomplete="off"><div class="sol" data-sol="L1-p">정답 <b class="mono">영</b> — 0 > 0도, 0 < 0도 거짓 → else.</div></div><div class="q"><p class="qtext"><b>5.</b> 출력 결과는?<span class="mark" id="mk-L1-p4"></span></p><pre class=""><span class="p">&gt;&gt;&gt; </span>score = <span class="n">95</span>
+<span class="p">&gt;&gt;&gt; </span><span class="k">if</span> score &gt;= <span class="n">70</span>:
+<span class="p">... </span>    <span class="b">print</span>(<span class="s">&quot;C 이상&quot;</span>)
+<span class="p">... </span><span class="k">elif</span> score &gt;= <span class="n">90</span>:
+<span class="p">... </span>    <span class="b">print</span>(<span class="s">&quot;A&quot;</span>)
+<span class="p">... </span><span class="k">else</span>:
+<span class="p">... </span>    <span class="b">print</span>(<span class="s">&quot;노력 필요&quot;</span>)
+<span class="p">... </span></pre><input type="text" class="ans wide mono" id="L1-p4" placeholder="출력 결과 (여러 줄이면 띄어쓰기로 구분)" autocomplete="off"><div class="sol" data-sol="L1-p">정답 <b class="mono">C 이상</b> — 첫 조건 95 >= 70이 이미 참 → 아래 elif는 검사하지 않는다. 조건 순서 주의!</div></div><div class="q"><p class="qtext"><b>6.</b> 출력 결과는?<span class="mark" id="mk-L1-p5"></span></p><pre class=""><span class="p">&gt;&gt;&gt; </span>menu = [<span class="s">&quot;김밥&quot;</span>, <span class="s">&quot;라면&quot;</span>, <span class="s">&quot;떡볶이&quot;</span>]
+<span class="p">&gt;&gt;&gt; </span><span class="k">if</span> <span class="s">&quot;우동&quot;</span> <span class="k">not</span> <span class="k">in</span> menu:
+<span class="p">... </span>    <span class="b">print</span>(<span class="s">&quot;없는 메뉴입니다&quot;</span>)
+<span class="p">... </span><span class="k">else</span>:
+<span class="p">... </span>    <span class="b">print</span>(<span class="s">&quot;주문 완료&quot;</span>)
+<span class="p">... </span></pre><input type="text" class="ans wide mono" id="L1-p5" placeholder="출력 결과 (여러 줄이면 띄어쓰기로 구분)" autocomplete="off"><div class="sol" data-sol="L1-p">정답 <b class="mono">없는 메뉴입니다</b> — '우동'은 리스트에 없으므로 not in의 결과가 True.</div></div><div class="btnrow"><button class="primary" onclick="grade(1,'p')">채점하기</button><button class="ghost" id="solbtn-L1-p" disabled onclick="showSol(1,'p')">정답 보기</button><span class="score" id="score-L1-p"></span></div></section><section><h2><span class="num">4</span>빈칸 채우기</h2><p class="hint">코드 속 빈칸에 알맞은 연산자·기호·키워드를 쓰세요.</p><div class="q"><p class="qtext"><b>1.</b> num이 <b>짝수</b>이면 "짝수"를 출력합니다.</p><pre class=""><span class="p">&gt;&gt;&gt; </span>num = <span class="n">10</span>
+<span class="p">&gt;&gt;&gt; </span><span class="k">if</span> num % <span class="n">2</span> <input type="text" class="blank" id="L1-b0_0" style="width:8ch" autocomplete="off" spellcheck="false"><span class="mark" id="mk-L1-b0_0"></span> <span class="n">0</span>:
+<span class="p">... </span>    <span class="b">print</span>(<span class="s">&quot;짝수&quot;</span>)
+<span class="p">... </span></pre><div class="sol" data-sol="L1-b">정답 <b class="mono">==</b> — 2로 나눈 나머지가 0과 '같은지' 비교 → ==</div></div><div class="q"><p class="qtext"><b>2.</b> 오류가 나지 않도록 <b>빠진 기호 하나</b>를 채우세요.</p><pre class=""><span class="p">&gt;&gt;&gt; </span>pw = <span class="s">&quot;1234&quot;</span>
+<span class="p">&gt;&gt;&gt; </span><span class="k">if</span> pw == <span class="s">&quot;1234&quot;</span><input type="text" class="blank" id="L1-b1_0" style="width:8ch" autocomplete="off" spellcheck="false"><span class="mark" id="mk-L1-b1_0"></span>
+<span class="p">... </span>    <span class="b">print</span>(<span class="s">&quot;로그인 성공&quot;</span>)
+<span class="p">... </span></pre><div class="sol" data-sol="L1-b">정답 <b class="mono">:</b> — 조건 끝에는 콜론(:)</div></div><div class="q"><p class="qtext"><b>3.</b> 90점 이상이면 A, <b>그렇지 않고</b> 80점 이상이면 B를 출력합니다.</p><pre class=""><span class="p">&gt;&gt;&gt; </span>score = <span class="n">85</span>
+<span class="p">&gt;&gt;&gt; </span><span class="k">if</span> score &gt;= <span class="n">90</span>:
+<span class="p">... </span>    <span class="b">print</span>(<span class="s">&quot;A&quot;</span>)
+<span class="p">... </span><input type="text" class="blank" id="L1-b2_0" style="width:8ch" autocomplete="off" spellcheck="false"><span class="mark" id="mk-L1-b2_0"></span> score &gt;= <span class="n">80</span>:
+<span class="p">... </span>    <span class="b">print</span>(<span class="s">&quot;B&quot;</span>)
+<span class="p">... </span></pre><div class="sol" data-sol="L1-b">정답 <b class="mono">elif</b> — 두 번째 조건은 elif</div></div><div class="q"><p class="qtext"><b>4.</b> 키가 140cm 이상<b>이고</b> 나이가 10세 이상이면 "탑승 가능"을 출력합니다.</p><pre class=""><span class="p">&gt;&gt;&gt; </span>height = <span class="n">145</span>
+<span class="p">&gt;&gt;&gt; </span>age = <span class="n">12</span>
+<span class="p">&gt;&gt;&gt; </span><span class="k">if</span> height &gt;= <span class="n">140</span> <input type="text" class="blank" id="L1-b3_0" style="width:8ch" autocomplete="off" spellcheck="false"><span class="mark" id="mk-L1-b3_0"></span> age &gt;= <span class="n">10</span>:
+<span class="p">... </span>    <span class="b">print</span>(<span class="s">&quot;탑승 가능&quot;</span>)
+<span class="p">... </span></pre><div class="sol" data-sol="L1-b">정답 <b class="mono">and</b> — 두 조건을 모두 만족 → and</div></div><div class="q"><p class="qtext"><b>5.</b> fruits 리스트에 "사과"가 <b>들어 있으면</b> 출력합니다.</p><pre class=""><span class="p">&gt;&gt;&gt; </span>fruits = [<span class="s">&quot;배&quot;</span>, <span class="s">&quot;사과&quot;</span>, <span class="s">&quot;귤&quot;</span>]
+<span class="p">&gt;&gt;&gt; </span><span class="k">if</span> <span class="s">&quot;사과&quot;</span> <input type="text" class="blank" id="L1-b4_0" style="width:8ch" autocomplete="off" spellcheck="false"><span class="mark" id="mk-L1-b4_0"></span> fruits:
+<span class="p">... </span>    <span class="b">print</span>(<span class="s">&quot;사과 있음&quot;</span>)
+<span class="p">... </span></pre><div class="sol" data-sol="L1-b">정답 <b class="mono">in</b> — 리스트 안에 있는지 → in</div></div><div class="btnrow"><button class="primary" onclick="grade(1,'b')">채점하기</button><button class="ghost" id="solbtn-L1-b" disabled onclick="showSol(1,'b')">정답 보기</button><span class="score" id="score-L1-b"></span></div></section><section><h2><span class="num">5</span>코드 작성하기</h2><p class="hint">IDLE 셸에서 실행해 보고, 목표 출력이 나오면 코드를 아래 칸에 직접 입력하세요.</p><div class="task"><b>실습 A — 놀이기구 탑승 검사기</b><ul><li>키(height)가 140 이상이면 "탑승 가능합니다"를 출력한다</li><li>140 미만이면 몇 cm가 부족한지 출력한다</li><li>부족한 키는 f 문자열로 계산해서 넣는다 (예: <span class="mono">f"키가 {140 - height}cm 부족해요"</span>)</li></ul></div><pre><span class="p">&gt;&gt;&gt; </span>height = <span class="n">135</span></pre><pre><span class="c"># 목표 출력</span>
+<span class="o">키가 5cm 부족해요</span></pre><textarea id="L1-codeA" class="mono" spellcheck="false" placeholder="IDLE 셸에서 실행해 본 코드를 여기에 직접 입력하세요"></textarea><div class="subq"></div><div class="task"><b>실습 B — 학점 계산기</b><ul><li>90점 이상 A, 80점 이상 B, 70점 이상 C, 60점 이상 D, 나머지는 F</li><li>if · elif · else를 사용한다</li><li>결과를 변수 grade에 넣은 뒤, f 문자열로 출력한다</li><li>score 값을 바꿔 가며 여러 번 확인해 본다</li></ul></div><pre><span class="p">&gt;&gt;&gt; </span>score = <span class="n">77</span></pre><pre><span class="c"># 목표 출력</span>
+<span class="o">77점은 C입니다</span></pre><textarea id="L1-codeB" class="mono" spellcheck="false" placeholder="IDLE 셸에서 실행해 본 코드를 여기에 직접 입력하세요"></textarea><div class="warn">셸에서는 블록이 끝난 뒤 <b>빈 줄 Enter</b>로 if문을 먼저 끝내고, 그다음 <span class="mono">&gt;&gt;&gt;</span>에서 print를 입력해야 합니다.</div></section><section><h2><span class="num">6</span>도전 문제</h2><p class="hint">빨리 끝낸 사람은 도전해 보세요.</p><div class="task"><b>도전 — 윤년 판별기</b><ul><li><b>4로 나누어떨어지고 100으로 나누어떨어지지 않거나</b>, <b>400으로 나누어떨어지면</b> 윤년이다</li><li>윤년이면 "○○○○년은 윤년입니다", 아니면 "○○○○년은 평년입니다"를 출력한다</li><li>and, or와 괄호를 함께 사용해 조건을 한 줄로 만든다</li><li>year를 1900, 2000으로 바꿔서도 확인해 보자 (1900년은 평년, 2000년은 윤년)</li></ul></div><pre><span class="p">&gt;&gt;&gt; </span>year = <span class="n">2024</span></pre><pre><span class="c"># 목표 출력</span>
+<span class="o">2024년은 윤년입니다</span></pre><textarea id="L1-codeC" class="mono" spellcheck="false" placeholder="IDLE 셸에서 실행해 본 코드를 여기에 직접 입력하세요"></textarea></section><section><h2><span class="num">7</span>정리 질문 · 결과 보기</h2><p class="hint">오늘 배운 내용을 자기 말로 정리해 보세요.</p><div class="q"><p class="qtext"><b>Q1.</b> <span class="mono">=</span>와 <span class="mono">==</span>의 차이를 예를 들어 설명하세요.</p><textarea id="L1-wr1"></textarea></div><div class="q"><p class="qtext"><b>Q2.</b> 출력 예상 5번에서 "A"가 출력되지 않은 이유를 쓰고, "A"가 나오게 하려면 조건 순서를 어떻게 바꿔야 하는지 쓰세요.</p><textarea id="L1-wr2"></textarea></div><div class="q"><p class="qtext"><b>Q3.</b> 생활 속 상황 하나를 골라 if · elif · else로 표현해 보세요. (조건과 그때 할 일을 쓰기)</p><textarea id="L1-wr3"></textarea></div><div class="btnrow"><button class="primary" onclick="showResult(1)">결과 보기</button><button class="ghost" onclick="clearLesson(1)">이 차시 답 지우기</button></div><div class="result" id="L1-result"></div><p class="note">[결과 보기]를 누르면 모든 문항이 한꺼번에 채점되고 이 차시 결과가 정리됩니다. 입력한 답은 이 컴퓨터의 브라우저에 자동 저장돼요.</p></section><div class="pager"><span></span><button class="primary" onclick="go(2)">2차시로 →</button></div><p class="lfoot">참고: 점프 투 파이썬 02-8 자료형의 값을 저장하는 공간, 변수 (wikidocs.net/18) · 03-1 if문 (wikidocs.net/20)</p></div><div class="lesson" data-l="2"><section class="hero"><p class="eyebrow">중학교 정보 · 파이썬 기초 · 제어문 2/3차시</p><h2 class="ltitle">while문 — 조건이 참인 동안 반복</h2><p class="lead">같은 일을 여러 번 해야 할 때, 조건을 정해 두고 반복하는 while문을 배웁니다.</p><ul class="goals"><li>while문의 구조와 <b>실행 흐름</b>을 설명할 수 있다.</li><li>반복의 세 요소(<b>시작값 · 조건 · 변화</b>)를 갖춘 반복문을 작성할 수 있다.</li><li><b>break</b>와 <b>continue</b>로 반복의 흐름을 바꿀 수 있다.</li></ul><div class="flow"><span class="chip">복습 3′</span><span class="chip">while 개념 15′</span><span class="chip">흐름 추적·개념 확인 12′</span><span class="chip">코드 실습 12′</span><span class="chip">정리·결과 보기 3′</span></div></section><section class="tipbox"><h2><span class="pill">TIP</span>IDLE 셸에서 여러 줄 코드 입력하기</h2><ul><li>콜론(<b>:</b>)을 치고 Enter → IDLE이 <b>4칸 들여쓰기</b>를 자동으로 해 줍니다.</li><li><b>else</b>·<b>elif</b>처럼 앞으로 나와야 하는 줄은 <b>Backspace</b>로 들여쓰기를 지운 뒤 입력하세요.</li><li>블록을 다 썼으면 <b>빈 줄에서 Enter를 한 번 더</b> → 그때 실행됩니다.</li><li>화면의 <span class="inline mono">...</span>은 "줄이 이어진다"는 IDLE 표시예요. 직접 입력하지 않습니다.</li><li>반복문 안에 if문을 쓰면 들여쓰기가 <b>8칸</b>이 됩니다. if 블록이 끝나면 Backspace로 4칸으로 돌아오세요.</li><li>프로그램이 멈추지 않으면 <b>Ctrl + C</b>! → <span class="inline mono">KeyboardInterrupt</span>가 뜨며 강제로 멈춥니다.</li></ul></section><section class="concept"><h2><span class="pill">개념 ①</span>while문의 기본 구조</h2><p class="txt">"줄넘기 5번"을 print로만 하면 다섯 줄을 써야 하지만, while문을 쓰면 몇 줄로 끝납니다.</p><div class="struct"><b class="kw">while</b> <i class="ph">조건문</i>:
+    <i class="ph">반복할 문장 1</i>
+    <i class="ph">반복할 문장 2</i></div><p class="txt"><b>조건 검사 → 참이면 블록 실행 → 다시 조건 검사 → …</b> 를 되풀이하다가, 조건이 거짓이 되는 순간 빠져나옵니다.</p><pre class=""><span class="p">&gt;&gt;&gt; </span>count = <span class="n">0</span>
+<span class="p">&gt;&gt;&gt; </span><span class="k">while</span> count &lt; <span class="n">5</span>:
+<span class="p">... </span>    count = count + <span class="n">1</span>
+<span class="p">... </span>    <span class="b">print</span>(<span class="s">f&quot;줄넘기 {count}번&quot;</span>)
+<span class="p">... </span>
+<span class="o">줄넘기 1번</span>
+<span class="o">줄넘기 2번</span>
+<span class="o">줄넘기 3번</span>
+<span class="o">줄넘기 4번</span>
+<span class="o">줄넘기 5번</span></pre><h3>실행 흐름 따라가기</h3><table class="tbl trace"><thead><tr><th>회차</th><th>조건 검사 (count &lt; 5)</th><th>count 값 변화</th><th>출력</th></tr></thead><tbody><tr><td>1</td><td>0 &lt; 5 → <b>True</b></td><td>0 → 1</td><td>줄넘기 1번</td></tr><tr><td>2</td><td>1 &lt; 5 → <b>True</b></td><td>1 → 2</td><td>줄넘기 2번</td></tr><tr><td>3</td><td>2 &lt; 5 → <b>True</b></td><td>2 → 3</td><td>줄넘기 3번</td></tr><tr><td>4</td><td>3 &lt; 5 → <b>True</b></td><td>3 → 4</td><td>줄넘기 4번</td></tr><tr><td>5</td><td>4 &lt; 5 → <b>True</b></td><td>4 → 5</td><td>줄넘기 5번</td></tr><tr><td>6</td><td>5 &lt; 5 → <b style='color:#D9613A'>False</b></td><td>—</td><td>반복 끝!</td></tr></tbody></table><label class="tried"><input type="checkbox" class="tryck" id="L2-try0"> IDLE에서 직접 쳐 봤어요</label></section><section class="concept"><h2><span class="pill">개념 ②</span>반복의 세 요소와 무한 루프</h2><div class="key">반복문에는 세 가지가 꼭 필요해요.<br>① <b>시작값</b> <span class="inline mono">count = 0</span> &nbsp; ② <b>조건</b> <span class="inline mono">count &lt; 5</span> &nbsp; ③ <b>변화</b> <span class="inline mono">count = count + 1</span><br>③ 변화가 빠지면 조건이 영원히 참 → <b>무한 루프</b>에 빠집니다! (Ctrl + C로 탈출)</div><h3>줄여 쓰기</h3><table class="tbl"><thead><tr><th>줄여 쓰기</th><th>같은 뜻</th></tr></thead><tbody><tr><td><span class="inline mono">n += 1</span></td><td><span class="inline mono">n = n + 1</span></td></tr><tr><td><span class="inline mono">n -= 2</span></td><td><span class="inline mono">n = n - 2</span></td></tr><tr><td><span class="inline mono">n *= 3</span></td><td><span class="inline mono">n = n * 3</span></td></tr></tbody></table><p class="txt">1부터 10까지 더하기 — 반복이 끝난 뒤 빈 줄 Enter, 그다음 <span class="inline mono">total</span>을 입력해 결과를 확인합니다.</p><pre class=""><span class="p">&gt;&gt;&gt; </span>total = <span class="n">0</span>
+<span class="p">&gt;&gt;&gt; </span>n = <span class="n">1</span>
+<span class="p">&gt;&gt;&gt; </span><span class="k">while</span> n &lt;= <span class="n">10</span>:
+<span class="p">... </span>    total += n
+<span class="p">... </span>    n += <span class="n">1</span>
+<span class="p">... </span>
+<span class="p">&gt;&gt;&gt; </span>total
+<span class="o">55</span></pre><label class="tried"><input type="checkbox" class="tryck" id="L2-try1"> IDLE에서 직접 쳐 봤어요</label></section><section class="concept"><h2><span class="pill">개념 ③</span>break — 반복을 즉시 멈추기</h2><p class="txt"><span class="inline mono">while True:</span>는 조건이 항상 참이라 계속 반복합니다. 이때 <span class="inline mono">break</span>를 만나면 반복문을 <b>바로 빠져나와요</b>.</p><pre class=""><span class="p">&gt;&gt;&gt; </span>snack = <span class="n">3</span>
+<span class="p">&gt;&gt;&gt; </span><span class="k">while</span> <span class="k">True</span>:
+<span class="p">... </span>    snack -= <span class="n">1</span>
+<span class="p">... </span>    <span class="b">print</span>(<span class="s">f&quot;과자 1개 판매! 남은 개수: {snack}&quot;</span>)
+<span class="p">... </span>    <span class="k">if</span> snack == <span class="n">0</span>:
+<span class="p">... </span>        <span class="b">print</span>(<span class="s">&quot;품절! 판매를 멈춥니다.&quot;</span>)
+<span class="p">... </span>        <span class="k">break</span>
+<span class="p">... </span>
+<span class="o">과자 1개 판매! 남은 개수: 2</span>
+<span class="o">과자 1개 판매! 남은 개수: 1</span>
+<span class="o">과자 1개 판매! 남은 개수: 0</span>
+<span class="o">품절! 판매를 멈춥니다.</span></pre><label class="tried"><input type="checkbox" class="tryck" id="L2-try2"> IDLE에서 직접 쳐 봤어요</label></section><section class="concept"><h2><span class="pill">개념 ④</span>continue — 이번 차례만 건너뛰기</h2><p class="txt"><span class="inline mono">continue</span>를 만나면 아래 문장을 건너뛰고 <b>조건 검사로 돌아갑니다</b>. 반복 자체는 계속돼요. 아래는 1~10 중 홀수만 출력하는 코드입니다.</p><pre class=""><span class="p">&gt;&gt;&gt; </span>n = <span class="n">0</span>
+<span class="p">&gt;&gt;&gt; </span><span class="k">while</span> n &lt; <span class="n">10</span>:
+<span class="p">... </span>    n += <span class="n">1</span>
+<span class="p">... </span>    <span class="k">if</span> n % <span class="n">2</span> == <span class="n">0</span>:
+<span class="p">... </span>        <span class="k">continue</span>
+<span class="p">... </span>    <span class="b">print</span>(n)
+<span class="p">... </span>
+<span class="o">1</span>
+<span class="o">3</span>
+<span class="o">5</span>
+<span class="o">7</span>
+<span class="o">9</span></pre><table class="tbl"><thead><tr><th></th><th>break</th><th>continue</th></tr></thead><tbody><tr><td>하는 일</td><td>반복문을 <b>완전히</b> 빠져나간다</td><td>이번 차례의 <b>남은 문장만</b> 건너뛴다</td></tr><tr><td>그다음</td><td>반복문 다음 문장으로</td><td>다시 조건 검사로</td></tr></tbody></table><div class="warn"><span class="mono">n += 1</span>을 continue보다 <b>아래</b>에 두면? n이 2일 때 continue → n이 계속 2 → 무한 루프! 변화하는 문장은 건너뛰지 않는 곳에 두세요.</div><label class="tried"><input type="checkbox" class="tryck" id="L2-try3"> IDLE에서 직접 쳐 봤어요</label></section><section><h2><span class="num">1</span>용어와 뜻 짝짓기</h2><p class="hint">각 코드·키의 뜻을 골라 보세요. (필요 없는 보기가 2개 있어요)</p><div class="q"><p class="qtext"><b>1.</b> <span class="inline mono">while 조건:</span><span class="mark" id="mk-L2-m0"></span></p><select id="L2-m0"><option value="">— 고르세요 —</option><option value="0">n의 값을 1 줄인다</option><option value="1">조건이 거짓인 동안 블록을 반복한다</option><option value="2">멈추지 않는 프로그램을 강제로 중단한다</option><option value="3">break를 만나기 전까지 계속 반복한다</option><option value="4">n의 값을 1 늘린다</option><option value="5">조건이 참인 동안 블록을 반복한다</option><option value="6">반복문을 즉시 빠져나온다</option><option value="7">이번 차례의 남은 문장을 건너뛰고 조건 검사로 간다</option></select></div><div class="q"><p class="qtext"><b>2.</b> <span class="inline mono">break</span><span class="mark" id="mk-L2-m1"></span></p><select id="L2-m1"><option value="">— 고르세요 —</option><option value="0">n의 값을 1 줄인다</option><option value="1">조건이 거짓인 동안 블록을 반복한다</option><option value="2">멈추지 않는 프로그램을 강제로 중단한다</option><option value="3">break를 만나기 전까지 계속 반복한다</option><option value="4">n의 값을 1 늘린다</option><option value="5">조건이 참인 동안 블록을 반복한다</option><option value="6">반복문을 즉시 빠져나온다</option><option value="7">이번 차례의 남은 문장을 건너뛰고 조건 검사로 간다</option></select></div><div class="q"><p class="qtext"><b>3.</b> <span class="inline mono">continue</span><span class="mark" id="mk-L2-m2"></span></p><select id="L2-m2"><option value="">— 고르세요 —</option><option value="0">n의 값을 1 줄인다</option><option value="1">조건이 거짓인 동안 블록을 반복한다</option><option value="2">멈추지 않는 프로그램을 강제로 중단한다</option><option value="3">break를 만나기 전까지 계속 반복한다</option><option value="4">n의 값을 1 늘린다</option><option value="5">조건이 참인 동안 블록을 반복한다</option><option value="6">반복문을 즉시 빠져나온다</option><option value="7">이번 차례의 남은 문장을 건너뛰고 조건 검사로 간다</option></select></div><div class="q"><p class="qtext"><b>4.</b> <span class="inline mono">while True:</span><span class="mark" id="mk-L2-m3"></span></p><select id="L2-m3"><option value="">— 고르세요 —</option><option value="0">n의 값을 1 줄인다</option><option value="1">조건이 거짓인 동안 블록을 반복한다</option><option value="2">멈추지 않는 프로그램을 강제로 중단한다</option><option value="3">break를 만나기 전까지 계속 반복한다</option><option value="4">n의 값을 1 늘린다</option><option value="5">조건이 참인 동안 블록을 반복한다</option><option value="6">반복문을 즉시 빠져나온다</option><option value="7">이번 차례의 남은 문장을 건너뛰고 조건 검사로 간다</option></select></div><div class="q"><p class="qtext"><b>5.</b> <span class="inline mono">n += 1</span><span class="mark" id="mk-L2-m4"></span></p><select id="L2-m4"><option value="">— 고르세요 —</option><option value="0">n의 값을 1 줄인다</option><option value="1">조건이 거짓인 동안 블록을 반복한다</option><option value="2">멈추지 않는 프로그램을 강제로 중단한다</option><option value="3">break를 만나기 전까지 계속 반복한다</option><option value="4">n의 값을 1 늘린다</option><option value="5">조건이 참인 동안 블록을 반복한다</option><option value="6">반복문을 즉시 빠져나온다</option><option value="7">이번 차례의 남은 문장을 건너뛰고 조건 검사로 간다</option></select></div><div class="q"><p class="qtext"><b>6.</b> <span class="inline mono">Ctrl + C</span><span class="mark" id="mk-L2-m5"></span></p><select id="L2-m5"><option value="">— 고르세요 —</option><option value="0">n의 값을 1 줄인다</option><option value="1">조건이 거짓인 동안 블록을 반복한다</option><option value="2">멈추지 않는 프로그램을 강제로 중단한다</option><option value="3">break를 만나기 전까지 계속 반복한다</option><option value="4">n의 값을 1 늘린다</option><option value="5">조건이 참인 동안 블록을 반복한다</option><option value="6">반복문을 즉시 빠져나온다</option><option value="7">이번 차례의 남은 문장을 건너뛰고 조건 검사로 간다</option></select></div><div class="btnrow"><button class="primary" onclick="grade(2,'m')">채점하기</button><span class="score" id="score-L2-m"></span></div></section><section><h2><span class="num">2</span>맞으면 O, 틀리면 X</h2><p class="hint">설명이 맞는지 판단해 보세요.</p><div class="q"><p class="qtext"><b>1.</b> while문은 조건이 <b>거짓</b>인 동안 반복한다.<span class="ox"><label><input type="radio" name="L2-o0" value="O"><span>O</span></label><label><input type="radio" name="L2-o0" value="X"><span>X</span></label></span><span class="mark" id="mk-L2-o0"></span></p></div><div class="q"><p class="qtext"><b>2.</b> while문의 조건이 처음부터 거짓이면 블록은 한 번도 실행되지 않는다.<span class="ox"><label><input type="radio" name="L2-o1" value="O"><span>O</span></label><label><input type="radio" name="L2-o1" value="X"><span>X</span></label></span><span class="mark" id="mk-L2-o1"></span></p></div><div class="q"><p class="qtext"><b>3.</b> break를 만나면 while문을 빠져나온다.<span class="ox"><label><input type="radio" name="L2-o2" value="O"><span>O</span></label><label><input type="radio" name="L2-o2" value="X"><span>X</span></label></span><span class="mark" id="mk-L2-o2"></span></p></div><div class="q"><p class="qtext"><b>4.</b> continue를 만나면 프로그램 전체가 끝난다.<span class="ox"><label><input type="radio" name="L2-o3" value="O"><span>O</span></label><label><input type="radio" name="L2-o3" value="X"><span>X</span></label></span><span class="mark" id="mk-L2-o3"></span></p></div><div class="q"><p class="qtext"><b>5.</b> <span class="mono">count += 1</span>과 <span class="mono">count = count + 1</span>은 같은 뜻이다.<span class="ox"><label><input type="radio" name="L2-o4" value="O"><span>O</span></label><label><input type="radio" name="L2-o4" value="X"><span>X</span></label></span><span class="mark" id="mk-L2-o4"></span></p></div><div class="q"><p class="qtext"><b>6.</b> 조건에 쓰인 변수의 값이 반복 안에서 바뀌지 않으면 무한 루프가 될 수 있다.<span class="ox"><label><input type="radio" name="L2-o5" value="O"><span>O</span></label><label><input type="radio" name="L2-o5" value="X"><span>X</span></label></span><span class="mark" id="mk-L2-o5"></span></p></div><div class="btnrow"><button class="primary" onclick="grade(2,'o')">채점하기</button><span class="score" id="score-L2-o"></span></div></section><section><h2><span class="num">3</span>실행 흐름 표 채우기</h2><p class="hint">컴퓨터가 된 것처럼 한 줄씩 따라가며 변수 값을 적어 보세요.</p><pre class=""><span class="p">&gt;&gt;&gt; </span>i = <span class="n">1</span>
+<span class="p">&gt;&gt;&gt; </span>total = <span class="n">0</span>
+<span class="p">&gt;&gt;&gt; </span><span class="k">while</span> i &lt;= <span class="n">4</span>:
+<span class="p">... </span>    total += i
+<span class="p">... </span>    i += <span class="n">1</span>
+<span class="p">... </span></pre><table class="tbl trace"><thead><tr><th>회차</th><th>실행 전 i</th><th>실행 후 total</th><th>실행 후 i</th></tr></thead><tbody><tr><td>1</td><td>1</td><td>1</td><td>2</td></tr><tr><td>2</td><td><input type="text" id="L2-t2b" autocomplete="off"><span class="mark" id="mk-L2-t2b"></span></td><td><input type="text" id="L2-t2t" autocomplete="off"><span class="mark" id="mk-L2-t2t"></span></td><td><input type="text" id="L2-t2a" autocomplete="off"><span class="mark" id="mk-L2-t2a"></span></td></tr><tr><td>3</td><td><input type="text" id="L2-t3b" autocomplete="off"><span class="mark" id="mk-L2-t3b"></span></td><td><input type="text" id="L2-t3t" autocomplete="off"><span class="mark" id="mk-L2-t3t"></span></td><td><input type="text" id="L2-t3a" autocomplete="off"><span class="mark" id="mk-L2-t3a"></span></td></tr><tr><td>4</td><td><input type="text" id="L2-t4b" autocomplete="off"><span class="mark" id="mk-L2-t4b"></span></td><td><input type="text" id="L2-t4t" autocomplete="off"><span class="mark" id="mk-L2-t4t"></span></td><td><input type="text" id="L2-t4a" autocomplete="off"><span class="mark" id="mk-L2-t4a"></span></td></tr></tbody></table><p class="note">1회차는 예시로 채워져 있어요.</p><div class="q"><p class="qtext">반복이 끝난 뒤 i의 값 → <input type="text" class="ans" id="L2-tfi" style="width:90px" autocomplete="off"><span class="mark" id="mk-L2-tfi"></span></p></div><div class="q"><p class="qtext">반복이 끝난 뒤 total의 값 → <input type="text" class="ans" id="L2-tft" style="width:90px" autocomplete="off"><span class="mark" id="mk-L2-tft"></span></p></div><div class="q"><p class="qtext">블록이 실행된 횟수 → <input type="text" class="ans" id="L2-tfn" style="width:90px" autocomplete="off"><span class="mark" id="mk-L2-tfn"></span></p></div><div class="btnrow"><button class="primary" onclick="grade(2,'t')">채점하기</button><span class="score" id="score-L2-t"></span></div></section><section><h2><span class="num">4</span>출력 결과 예상하기</h2><p class="hint">여러 줄이 출력되면 띄어쓰기로 구분해 적으세요. (예: 1 2 3)</p><div class="q"><p class="qtext"><b>1.</b> 출력 결과는?<span class="mark" id="mk-L2-p0"></span></p><pre class=""><span class="p">&gt;&gt;&gt; </span>n = <span class="n">3</span>
+<span class="p">&gt;&gt;&gt; </span><span class="k">while</span> n &gt; <span class="n">0</span>:
+<span class="p">... </span>    <span class="b">print</span>(n)
+<span class="p">... </span>    n -= <span class="n">1</span>
+<span class="p">... </span></pre><input type="text" class="ans wide mono" id="L2-p0" placeholder="출력 결과 (여러 줄이면 띄어쓰기로 구분)" autocomplete="off"><div class="sol" data-sol="L2-p">정답 <b class="mono">3 / 2 / 1</b> — 3, 2, 1을 출력하고 n이 0이 되면 조건 0 > 0이 거짓.</div></div><div class="q"><p class="qtext"><b>2.</b> 출력 결과는?<span class="mark" id="mk-L2-p1"></span></p><pre class=""><span class="p">&gt;&gt;&gt; </span>n = <span class="n">1</span>
+<span class="p">&gt;&gt;&gt; </span><span class="k">while</span> n &lt; <span class="n">20</span>:
+<span class="p">... </span>    n = n * <span class="n">2</span>
+<span class="p">... </span>
+<span class="p">&gt;&gt;&gt; </span>n</pre><input type="text" class="ans wide mono" id="L2-p1" placeholder="출력 결과 (여러 줄이면 띄어쓰기로 구분)" autocomplete="off"><div class="sol" data-sol="L2-p">정답 <b class="mono">32</b> — 1 → 2 → 4 → 8 → 16 → 32. 16 < 20이 참이라 한 번 더 곱해진다.</div></div><div class="q"><p class="qtext"><b>3.</b> 출력 결과는?<span class="mark" id="mk-L2-p2"></span></p><pre class=""><span class="p">&gt;&gt;&gt; </span>k = <span class="n">10</span>
+<span class="p">&gt;&gt;&gt; </span><span class="k">while</span> k &lt; <span class="n">5</span>:
+<span class="p">... </span>    <span class="b">print</span>(<span class="s">&quot;반복!&quot;</span>)
+<span class="p">... </span>
+<span class="p">&gt;&gt;&gt; </span><span class="b">print</span>(<span class="s">&quot;끝&quot;</span>)</pre><input type="text" class="ans wide mono" id="L2-p2" placeholder="출력 결과 (여러 줄이면 띄어쓰기로 구분)" autocomplete="off"><div class="sol" data-sol="L2-p">정답 <b class="mono">끝</b> — 10 < 5는 처음부터 거짓 → 블록은 한 번도 실행되지 않는다.</div></div><div class="q"><p class="qtext"><b>4.</b> 출력 결과는?<span class="mark" id="mk-L2-p3"></span></p><pre class=""><span class="p">&gt;&gt;&gt; </span>n = <span class="n">0</span>
+<span class="p">&gt;&gt;&gt; </span><span class="k">while</span> <span class="k">True</span>:
+<span class="p">... </span>    n += <span class="n">3</span>
+<span class="p">... </span>    <span class="k">if</span> n &gt; <span class="n">10</span>:
+<span class="p">... </span>        <span class="k">break</span>
+<span class="p">... </span>
+<span class="p">&gt;&gt;&gt; </span>n</pre><input type="text" class="ans wide mono" id="L2-p3" placeholder="출력 결과 (여러 줄이면 띄어쓰기로 구분)" autocomplete="off"><div class="sol" data-sol="L2-p">정답 <b class="mono">12</b> — 3 → 6 → 9 → 12. 12 > 10에서 break.</div></div><div class="q"><p class="qtext"><b>5.</b> 출력 결과는?<span class="mark" id="mk-L2-p4"></span></p><pre class=""><span class="p">&gt;&gt;&gt; </span>n = <span class="n">0</span>
+<span class="p">&gt;&gt;&gt; </span><span class="k">while</span> n &lt; <span class="n">6</span>:
+<span class="p">... </span>    n += <span class="n">1</span>
+<span class="p">... </span>    <span class="k">if</span> n == <span class="n">3</span>:
+<span class="p">... </span>        <span class="k">continue</span>
+<span class="p">... </span>    <span class="b">print</span>(n)
+<span class="p">... </span></pre><input type="text" class="ans wide mono" id="L2-p4" placeholder="출력 결과 (여러 줄이면 띄어쓰기로 구분)" autocomplete="off"><div class="sol" data-sol="L2-p">정답 <b class="mono">1 / 2 / 4 / 5 / 6</b> — n이 3일 때만 print를 건너뛴다.</div></div><div class="q"><p class="qtext"><b>6.</b> 출력 결과는?<span class="mark" id="mk-L2-p5"></span></p><pre class=""><span class="p">&gt;&gt;&gt; </span>count = <span class="n">0</span>
+<span class="p">&gt;&gt;&gt; </span>x = <span class="n">100</span>
+<span class="p">&gt;&gt;&gt; </span><span class="k">while</span> x &gt; <span class="n">1</span>:
+<span class="p">... </span>    x = x // <span class="n">2</span>
+<span class="p">... </span>    count += <span class="n">1</span>
+<span class="p">... </span>
+<span class="p">&gt;&gt;&gt; </span>count</pre><input type="text" class="ans wide mono" id="L2-p5" placeholder="출력 결과 (여러 줄이면 띄어쓰기로 구분)" autocomplete="off"><div class="sol" data-sol="L2-p">정답 <b class="mono">6</b> — 100 → 50 → 25 → 12 → 6 → 3 → 1, 모두 6번 나눴다.</div></div><div class="btnrow"><button class="primary" onclick="grade(2,'p')">채점하기</button><button class="ghost" id="solbtn-L2-p" disabled onclick="showSol(2,'p')">정답 보기</button><span class="score" id="score-L2-p"></span></div></section><section><h2><span class="num">5</span>빈칸 채우기 · 버그 고치기</h2><p class="hint">코드 속 빈칸에 알맞은 코드를 쓰세요.</p><div class="q"><p class="qtext"><b>1.</b> 1부터 5까지 출력해야 하는데 <b>멈추지 않아요!</b> 빠진 한 줄은?</p><pre class=""><span class="p">&gt;&gt;&gt; </span>i = <span class="n">1</span>
+<span class="p">&gt;&gt;&gt; </span><span class="k">while</span> i &lt;= <span class="n">5</span>:
+<span class="p">... </span>    <span class="b">print</span>(i)
+<span class="p">... </span>    <input type="text" class="blank" id="L2-b0_0" style="width:9ch" autocomplete="off" spellcheck="false"><span class="mark" id="mk-L2-b0_0"></span>
+<span class="p">... </span></pre><div class="sol" data-sol="L2-b">정답 <b class="mono">i += 1</b> — 변화가 빠져 i가 계속 1 → 무한 루프</div></div><div class="q"><p class="qtext"><b>2.</b> 1부터 <b>100까지</b>(100 포함) 더합니다.</p><pre class=""><span class="p">&gt;&gt;&gt; </span>total = <span class="n">0</span>
+<span class="p">&gt;&gt;&gt; </span>n = <span class="n">1</span>
+<span class="p">&gt;&gt;&gt; </span><span class="k">while</span> n <input type="text" class="blank" id="L2-b1_0" style="width:8ch" autocomplete="off" spellcheck="false"><span class="mark" id="mk-L2-b1_0"></span> <span class="n">100</span>:
+<span class="p">... </span>    total += n
+<span class="p">... </span>    n += <span class="n">1</span>
+<span class="p">... </span></pre><div class="sol" data-sol="L2-b">정답 <b class="mono">&lt;=</b> — 100을 포함해야 하므로 <= (n < 101도 가능하지만 여기선 연산자만)</div></div><div class="q"><p class="qtext"><b>3.</b> 남은 돈이 300원 미만이 되면 <b>반복을 멈춥니다</b>.</p><pre class=""><span class="p">&gt;&gt;&gt; </span>money = <span class="n">1000</span>
+<span class="p">&gt;&gt;&gt; </span><span class="k">while</span> <span class="k">True</span>:
+<span class="p">... </span>    money -= <span class="n">300</span>
+<span class="p">... </span>    <span class="k">if</span> money &lt; <span class="n">300</span>:
+<span class="p">... </span>        <input type="text" class="blank" id="L2-b2_0" style="width:8ch" autocomplete="off" spellcheck="false"><span class="mark" id="mk-L2-b2_0"></span>
+<span class="p">... </span></pre><div class="sol" data-sol="L2-b">정답 <b class="mono">break</b> — 반복을 끝내는 break</div></div><div class="q"><p class="qtext"><b>4.</b> 3의 배수는 출력하지 않고 <b>건너뜁니다</b>.</p><pre class=""><span class="p">&gt;&gt;&gt; </span>n = <span class="n">0</span>
+<span class="p">&gt;&gt;&gt; </span><span class="k">while</span> n &lt; <span class="n">10</span>:
+<span class="p">... </span>    n += <span class="n">1</span>
+<span class="p">... </span>    <span class="k">if</span> n % <span class="n">3</span> == <span class="n">0</span>:
+<span class="p">... </span>        <input type="text" class="blank" id="L2-b3_0" style="width:11ch" autocomplete="off" spellcheck="false"><span class="mark" id="mk-L2-b3_0"></span>
+<span class="p">... </span>    <span class="b">print</span>(n)
+<span class="p">... </span></pre><div class="sol" data-sol="L2-b">정답 <b class="mono">continue</b> — 이번 차례만 건너뛰는 continue</div></div><div class="btnrow"><button class="primary" onclick="grade(2,'b')">채점하기</button><button class="ghost" id="solbtn-L2-b" disabled onclick="showSol(2,'b')">정답 보기</button><span class="score" id="score-L2-b"></span></div></section><section><h2><span class="num">6</span>코드 작성하기</h2><p class="hint">IDLE 셸에서 실행해 보고, 목표 출력이 나오면 코드를 아래 칸에 직접 입력하세요.</p><div class="task"><b>실습 A — 로켓 카운트다운</b><ul><li>while문으로 5부터 1까지 거꾸로 출력한다</li><li>반복이 끝나면 "발사!"를 출력한다</li><li>시작값 · 조건 · 변화 세 가지가 모두 있는지 확인한다</li></ul></div><pre><span class="p">&gt;&gt;&gt; </span>n = <span class="n">5</span></pre><pre><span class="c"># 목표 출력</span>
+<span class="o">5</span>
+<span class="o">4</span>
+<span class="o">3</span>
+<span class="o">2</span>
+<span class="o">1</span>
+<span class="o">발사!</span></pre><textarea id="L2-codeA" class="mono" spellcheck="false" placeholder="IDLE 셸에서 실행해 본 코드를 여기에 직접 입력하세요"></textarea><div class="subq"></div><div class="task"><b>실습 B — 저금통 목표 달성</b><ul><li>하루에 500원씩 저금한다</li><li>모은 돈이 10000원 <b>이상</b>이 되면 반복을 멈춘다</li><li>며칠째에 목표를 이뤘는지 f 문자열로 출력한다</li><li>몇 번 반복할지 미리 모를 때 while문이 딱 맞아요!</li></ul></div><pre><span class="p">&gt;&gt;&gt; </span>saving = <span class="n">0</span>
+<span class="p">&gt;&gt;&gt; </span>day = <span class="n">0</span></pre><pre><span class="c"># 목표 출력</span>
+<span class="o">20일째에 10000원을 모았어요</span></pre><textarea id="L2-codeB" class="mono" spellcheck="false" placeholder="IDLE 셸에서 실행해 본 코드를 여기에 직접 입력하세요"></textarea></section><section><h2><span class="num">7</span>도전 문제</h2><p class="hint">빨리 끝낸 사람은 도전해 보세요.</p><div class="task"><b>도전 — 콜라츠 추측</b><ul><li>n이 짝수이면 2로 나누고(<span class="mono">//</span>), 홀수이면 3을 곱하고 1을 더한다</li><li>n이 1이 될 때까지 반복하며, 바뀐 값을 한 줄씩 출력한다</li><li>몇 번 만에 1이 되었는지 마지막에 출력한다</li><li>while 안에 if-else가 들어가니 들여쓰기에 주의!  더 도전: n = 27이면 몇 번일까?</li></ul></div><pre><span class="p">&gt;&gt;&gt; </span>n = <span class="n">6</span>
+<span class="p">&gt;&gt;&gt; </span>count = <span class="n">0</span></pre><pre><span class="c"># 목표 출력</span>
+<span class="o">3</span>
+<span class="o">10</span>
+<span class="o">5</span>
+<span class="o">16</span>
+<span class="o">8</span>
+<span class="o">4</span>
+<span class="o">2</span>
+<span class="o">1</span>
+<span class="o">8번 만에 1이 되었습니다</span></pre><textarea id="L2-codeC" class="mono" spellcheck="false" placeholder="IDLE 셸에서 실행해 본 코드를 여기에 직접 입력하세요"></textarea></section><section><h2><span class="num">8</span>정리 질문 · 결과 보기</h2><p class="hint">오늘 배운 내용을 자기 말로 정리해 보세요.</p><div class="q"><p class="qtext"><b>Q1.</b> while문에서 무한 루프가 생기는 이유와 막는 방법을 쓰세요.</p><textarea id="L2-wr1"></textarea></div><div class="q"><p class="qtext"><b>Q2.</b> break와 continue의 차이를 출력 예상 4번·5번을 예로 들어 설명하세요.</p><textarea id="L2-wr2"></textarea></div><div class="q"><p class="qtext"><b>Q3.</b> 생활 속에서 "~하는 동안 계속" 하는 일을 하나 골라 while문 조건으로 표현해 보세요.</p><textarea id="L2-wr3"></textarea></div><div class="btnrow"><button class="primary" onclick="showResult(2)">결과 보기</button><button class="ghost" onclick="clearLesson(2)">이 차시 답 지우기</button></div><div class="result" id="L2-result"></div><p class="note">[결과 보기]를 누르면 모든 문항이 한꺼번에 채점되고 이 차시 결과가 정리됩니다. 입력한 답은 이 컴퓨터의 브라우저에 자동 저장돼요.</p></section><div class="pager"><button class="ghost" onclick="go(1)">← 1차시</button><button class="primary" onclick="go(3)">3차시로 →</button></div><p class="lfoot">참고: 점프 투 파이썬 03-2 while문 (wikidocs.net/21)</p></div><div class="lesson" data-l="3"><section class="hero"><p class="eyebrow">중학교 정보 · 파이썬 기초 · 제어문 3/3차시</p><h2 class="ltitle">for문 — 하나씩 꺼내며 반복</h2><p class="lead">리스트·문자열·range에서 값을 하나씩 꺼내 반복하는 for문을 배우고, 03장 전체를 되새김 문제로 정리합니다.</p><ul class="goals"><li>for문의 구조와 동작을 설명할 수 있다.</li><li><b>range()</b>로 원하는 범위의 숫자를 만들어 반복할 수 있다.</li><li>상황에 따라 <b>while문과 for문</b>을 골라 쓸 수 있다.</li></ul><div class="flow"><span class="chip">for 개념 15′</span><span class="chip">개념 확인 10′</span><span class="chip">코드 실습 10′</span><span class="chip">03장 되새김 8′</span><span class="chip">정리·결과 보기 2′</span></div></section><section class="tipbox"><h2><span class="pill">TIP</span>IDLE 셸에서 여러 줄 코드 입력하기</h2><ul><li>콜론(<b>:</b>)을 치고 Enter → IDLE이 <b>4칸 들여쓰기</b>를 자동으로 해 줍니다.</li><li><b>else</b>·<b>elif</b>처럼 앞으로 나와야 하는 줄은 <b>Backspace</b>로 들여쓰기를 지운 뒤 입력하세요.</li><li>블록을 다 썼으면 <b>빈 줄에서 Enter를 한 번 더</b> → 그때 실행됩니다.</li><li>화면의 <span class="inline mono">...</span>은 "줄이 이어진다"는 IDLE 표시예요. 직접 입력하지 않습니다.</li><li>for 안에 for(이중 for)나 if를 쓰면 들여쓰기가 <b>8칸</b>이 됩니다. 블록이 끝나면 Backspace로 돌아오세요.</li><li>리스트 컴프리헨션은 <b>한 줄</b>이라 셸에 바로 입력하면 결과가 나옵니다.</li></ul></section><section class="concept"><h2><span class="pill">개념 ①</span>for문의 기본 구조</h2><div class="struct"><b class="kw">for</b> <i class="ph">변수</i> <b class="kw">in</b> <i class="ph">리스트(또는 튜플, 문자열)</i>:
+    <i class="ph">반복할 문장 1</i>
+    <i class="ph">반복할 문장 2</i></div><p class="txt">리스트의 <b>첫 번째 요소부터 마지막 요소까지</b> 하나씩 꺼내 변수에 넣고, 그때마다 블록을 실행합니다. 다 꺼내면 끝!</p><pre class=""><span class="p">&gt;&gt;&gt; </span>fruits = [<span class="s">&quot;사과&quot;</span>, <span class="s">&quot;바나나&quot;</span>, <span class="s">&quot;포도&quot;</span>]
+<span class="p">&gt;&gt;&gt; </span><span class="k">for</span> f <span class="k">in</span> fruits:
+<span class="p">... </span>    <span class="b">print</span>(<span class="s">f&quot;{f} 좋아!&quot;</span>)
+<span class="p">... </span>
+<span class="o">사과 좋아!</span>
+<span class="o">바나나 좋아!</span>
+<span class="o">포도 좋아!</span></pre><table class="tbl trace"><thead><tr><th>회차</th><th>f에 들어간 값</th><th>출력</th></tr></thead><tbody><tr><td>1</td><td>"사과"</td><td>사과 좋아!</td></tr><tr><td>2</td><td>"바나나"</td><td>바나나 좋아!</td></tr><tr><td>3</td><td>"포도"</td><td>포도 좋아!</td></tr></tbody></table><p class="txt">문자열을 넣으면 <b>한 글자씩</b> 꺼냅니다.</p><pre class=""><span class="p">&gt;&gt;&gt; </span><span class="k">for</span> ch <span class="k">in</span> <span class="s">&quot;파이썬&quot;</span>:
+<span class="p">... </span>    <span class="b">print</span>(ch)
+<span class="p">... </span>
+<span class="o">파</span>
+<span class="o">이</span>
+<span class="o">썬</span></pre><label class="tried"><input type="checkbox" class="tryck" id="L3-try0"> IDLE에서 직접 쳐 봤어요</label></section><section class="concept"><h2><span class="pill">개념 ②</span>range() — 숫자 범위 만들기</h2><p class="hint">for문과 가장 자주 함께 쓰는 함수입니다.</p><table class="tbl"><thead><tr><th>쓰는 법</th><th>만들어지는 수</th><th>기억할 점</th></tr></thead><tbody><tr><td><span class="inline mono">range(5)</span></td><td>0, 1, 2, 3, 4</td><td>0부터 시작, <b>5는 포함하지 않음</b></td></tr><tr><td><span class="inline mono">range(1, 6)</span></td><td>1, 2, 3, 4, 5</td><td>시작 수는 포함, 끝 수는 미포함</td></tr><tr><td><span class="inline mono">range(0, 10, 3)</span></td><td>0, 3, 6, 9</td><td>세 번째 숫자는 <b>간격</b></td></tr><tr><td><span class="inline mono">range(5, 0, -1)</span></td><td>5, 4, 3, 2, 1</td><td>간격이 음수면 거꾸로</td></tr></tbody></table><p class="txt">range가 만든 수를 눈으로 보려면 <span class="inline mono">list()</span>로 감싸 보세요.</p><pre class=""><span class="p">&gt;&gt;&gt; </span><span class="b">list</span>(<span class="b">range</span>(<span class="n">5</span>))
+<span class="o">[0, 1, 2, 3, 4]</span>
+<span class="p">&gt;&gt;&gt; </span><span class="b">list</span>(<span class="b">range</span>(<span class="n">1</span>, <span class="n">6</span>))
+<span class="o">[1, 2, 3, 4, 5]</span>
+<span class="p">&gt;&gt;&gt; </span><span class="b">list</span>(<span class="b">range</span>(<span class="n">0</span>, <span class="n">10</span>, <span class="n">3</span>))
+<span class="o">[0, 3, 6, 9]</span></pre><p class="txt">2차시에 while로 했던 1~10 합 구하기를 for로 바꾸면:</p><pre class=""><span class="p">&gt;&gt;&gt; </span>total = <span class="n">0</span>
+<span class="p">&gt;&gt;&gt; </span><span class="k">for</span> i <span class="k">in</span> <span class="b">range</span>(<span class="n">1</span>, <span class="n">11</span>):
+<span class="p">... </span>    total += i
+<span class="p">... </span>
+<span class="p">&gt;&gt;&gt; </span>total
+<span class="o">55</span></pre><div class="key">while문은 시작값 · 조건 · 변화를 <b>직접</b> 써야 했지만, for + range는 세 가지를 range가 알아서 처리합니다.</div><table class="tbl"><thead><tr><th></th><th>while문</th><th>for문</th></tr></thead><tbody><tr><td>반복 기준</td><td>조건이 <b>참인 동안</b></td><td>리스트·range의 값을 <b>다 꺼낼 때까지</b></td></tr><tr><td>이럴 때 좋아요</td><td>몇 번 반복할지 <b>모를 때</b><br>(예: 10000원이 모일 때까지)</td><td>반복할 대상·횟수가 <b>정해져 있을 때</b><br>(예: 우리 반 30명 점수 확인)</td></tr></tbody></table><label class="tried"><input type="checkbox" class="tryck" id="L3-try1"> IDLE에서 직접 쳐 봤어요</label></section><section class="concept"><h2><span class="pill">개념 ③</span>for문 + if문, 그리고 continue</h2><p class="txt">수행평가 점수 리스트에서 60점 이상은 통과, 미만은 보충 수업 대상으로 나눠 봅시다.</p><pre class=""><span class="p">&gt;&gt;&gt; </span>scores = [<span class="n">85</span>, <span class="n">42</span>, <span class="n">70</span>, <span class="n">58</span>, <span class="n">93</span>]
+<span class="p">&gt;&gt;&gt; </span>number = <span class="n">0</span>
+<span class="p">&gt;&gt;&gt; </span><span class="k">for</span> s <span class="k">in</span> scores:
+<span class="p">... </span>    number += <span class="n">1</span>
+<span class="p">... </span>    <span class="k">if</span> s &gt;= <span class="n">60</span>:
+<span class="p">... </span>        <span class="b">print</span>(<span class="s">f&quot;{number}번: 통과&quot;</span>)
+<span class="p">... </span>    <span class="k">else</span>:
+<span class="p">... </span>        <span class="b">print</span>(<span class="s">f&quot;{number}번: 보충 수업&quot;</span>)
+<span class="p">... </span>
+<span class="o">1번: 통과</span>
+<span class="o">2번: 보충 수업</span>
+<span class="o">3번: 통과</span>
+<span class="o">4번: 보충 수업</span>
+<span class="o">5번: 통과</span></pre><p class="txt">for문에서도 <span class="inline mono">continue</span>와 <span class="inline mono">break</span>를 쓸 수 있어요. 60점 미만은 건너뛰고 통과 점수만 출력하면:</p><pre class=""><span class="p">&gt;&gt;&gt; </span><span class="k">for</span> s <span class="k">in</span> scores:
+<span class="p">... </span>    <span class="k">if</span> s &lt; <span class="n">60</span>:
+<span class="p">... </span>        <span class="k">continue</span>
+<span class="p">... </span>    <span class="b">print</span>(<span class="s">f&quot;{s}점 통과&quot;</span>)
+<span class="p">... </span>
+<span class="o">85점 통과</span>
+<span class="o">70점 통과</span>
+<span class="o">93점 통과</span></pre><label class="tried"><input type="checkbox" class="tryck" id="L3-try2"> IDLE에서 직접 쳐 봤어요</label></section><section class="concept"><h2><span class="pill">개념 ④</span>for문 안의 for문 — 구구단</h2><pre class=""><span class="p">&gt;&gt;&gt; </span><span class="k">for</span> i <span class="k">in</span> <span class="b">range</span>(<span class="n">2</span>, <span class="n">4</span>):
+<span class="p">... </span>    <span class="k">for</span> j <span class="k">in</span> <span class="b">range</span>(<span class="n">1</span>, <span class="n">4</span>):
+<span class="p">... </span>        <span class="b">print</span>(<span class="s">f&quot;{i} x {j} = {i * j}&quot;</span>)
+<span class="p">... </span>
+<span class="o">2 x 1 = 2</span>
+<span class="o">2 x 2 = 4</span>
+<span class="o">2 x 3 = 6</span>
+<span class="o">3 x 1 = 3</span>
+<span class="o">3 x 2 = 6</span>
+<span class="o">3 x 3 = 9</span></pre><div class="key">바깥 for가 <b>한 번</b> 돌 때, 안쪽 for는 <b>처음부터 끝까지</b> 다 돕니다. (i = 2일 때 j = 1, 2, 3 → i = 3일 때 j = 1, 2, 3)</div><label class="tried"><input type="checkbox" class="tryck" id="L3-try3"> IDLE에서 직접 쳐 봤어요</label></section><section class="concept"><h2><span class="pill">개념 ⑤</span>리스트 컴프리헨션 — for문을 한 줄로 (심화)</h2><div class="struct">[<i class="ph">표현식</i> <b class="kw">for</b> <i class="ph">변수</i> <b class="kw">in</b> <i class="ph">리스트</i> <b class="kw">if</b> <i class="ph">조건</i>]</div><p class="txt">for문으로 새 리스트를 만드는 코드를 한 줄로 줄일 수 있어요. <span class="inline mono">if 조건</span>은 필요할 때만 붙입니다.</p><pre class=""><span class="p">&gt;&gt;&gt; </span>nums = [<span class="n">1</span>, <span class="n">2</span>, <span class="n">3</span>, <span class="n">4</span>]
+<span class="p">&gt;&gt;&gt; </span>result = []
+<span class="p">&gt;&gt;&gt; </span><span class="k">for</span> n <span class="k">in</span> nums:
+<span class="p">... </span>    result.<span class="b">append</span>(n * <span class="n">3</span>)
+<span class="p">... </span>
+<span class="p">&gt;&gt;&gt; </span>result
+<span class="o">[3, 6, 9, 12]</span>
+<span class="p">&gt;&gt;&gt; </span>[n * <span class="n">3</span> <span class="k">for</span> n <span class="k">in</span> nums]
+<span class="o">[3, 6, 9, 12]</span>
+<span class="p">&gt;&gt;&gt; </span>[n * <span class="n">3</span> <span class="k">for</span> n <span class="k">in</span> nums <span class="k">if</span> n % <span class="n">2</span> == <span class="n">0</span>]
+<span class="o">[6, 12]</span></pre><label class="tried"><input type="checkbox" class="tryck" id="L3-try4"> IDLE에서 직접 쳐 봤어요</label></section><section><h2><span class="num">1</span>range와 만들어지는 수 짝짓기</h2><p class="hint">끝 수가 포함되는지 주의! (필요 없는 보기가 2개 있어요)</p><div class="q"><p class="qtext"><b>1.</b> <span class="inline mono">range(5)</span><span class="mark" id="mk-L3-m0"></span></p><select id="L3-m0"><option value="">— 고르세요 —</option><option value="0">1, 2, 3, 4, 5</option><option value="1">0, 1, 2, 3, 4</option><option value="2">0, 5</option><option value="3">5, 4, 3, 2, 1</option><option value="4">0, 5, 10</option><option value="5">1, 2, 3, 4</option><option value="6">2, 4, 6, 8, 10</option><option value="7">1, 3, 5</option></select></div><div class="q"><p class="qtext"><b>2.</b> <span class="inline mono">range(1, 5)</span><span class="mark" id="mk-L3-m1"></span></p><select id="L3-m1"><option value="">— 고르세요 —</option><option value="0">1, 2, 3, 4, 5</option><option value="1">0, 1, 2, 3, 4</option><option value="2">0, 5</option><option value="3">5, 4, 3, 2, 1</option><option value="4">0, 5, 10</option><option value="5">1, 2, 3, 4</option><option value="6">2, 4, 6, 8, 10</option><option value="7">1, 3, 5</option></select></div><div class="q"><p class="qtext"><b>3.</b> <span class="inline mono">range(1, 6, 2)</span><span class="mark" id="mk-L3-m2"></span></p><select id="L3-m2"><option value="">— 고르세요 —</option><option value="0">1, 2, 3, 4, 5</option><option value="1">0, 1, 2, 3, 4</option><option value="2">0, 5</option><option value="3">5, 4, 3, 2, 1</option><option value="4">0, 5, 10</option><option value="5">1, 2, 3, 4</option><option value="6">2, 4, 6, 8, 10</option><option value="7">1, 3, 5</option></select></div><div class="q"><p class="qtext"><b>4.</b> <span class="inline mono">range(5, 0, -1)</span><span class="mark" id="mk-L3-m3"></span></p><select id="L3-m3"><option value="">— 고르세요 —</option><option value="0">1, 2, 3, 4, 5</option><option value="1">0, 1, 2, 3, 4</option><option value="2">0, 5</option><option value="3">5, 4, 3, 2, 1</option><option value="4">0, 5, 10</option><option value="5">1, 2, 3, 4</option><option value="6">2, 4, 6, 8, 10</option><option value="7">1, 3, 5</option></select></div><div class="q"><p class="qtext"><b>5.</b> <span class="inline mono">range(0, 10, 5)</span><span class="mark" id="mk-L3-m4"></span></p><select id="L3-m4"><option value="">— 고르세요 —</option><option value="0">1, 2, 3, 4, 5</option><option value="1">0, 1, 2, 3, 4</option><option value="2">0, 5</option><option value="3">5, 4, 3, 2, 1</option><option value="4">0, 5, 10</option><option value="5">1, 2, 3, 4</option><option value="6">2, 4, 6, 8, 10</option><option value="7">1, 3, 5</option></select></div><div class="q"><p class="qtext"><b>6.</b> <span class="inline mono">range(2, 11, 2)</span><span class="mark" id="mk-L3-m5"></span></p><select id="L3-m5"><option value="">— 고르세요 —</option><option value="0">1, 2, 3, 4, 5</option><option value="1">0, 1, 2, 3, 4</option><option value="2">0, 5</option><option value="3">5, 4, 3, 2, 1</option><option value="4">0, 5, 10</option><option value="5">1, 2, 3, 4</option><option value="6">2, 4, 6, 8, 10</option><option value="7">1, 3, 5</option></select></div><div class="btnrow"><button class="primary" onclick="grade(3,'m')">채점하기</button><span class="score" id="score-L3-m"></span></div></section><section><h2><span class="num">2</span>맞으면 O, 틀리면 X</h2><p class="hint">설명이 맞는지 판단해 보세요.</p><div class="q"><p class="qtext"><b>1.</b> for문은 리스트의 요소를 앞에서부터 하나씩 꺼내 변수에 담는다.<span class="ox"><label><input type="radio" name="L3-o0" value="O"><span>O</span></label><label><input type="radio" name="L3-o0" value="X"><span>X</span></label></span><span class="mark" id="mk-L3-o0"></span></p></div><div class="q"><p class="qtext"><b>2.</b> <span class="mono">range(1, 10)</span>에는 10이 포함된다.<span class="ox"><label><input type="radio" name="L3-o1" value="O"><span>O</span></label><label><input type="radio" name="L3-o1" value="X"><span>X</span></label></span><span class="mark" id="mk-L3-o1"></span></p></div><div class="q"><p class="qtext"><b>3.</b> 문자열도 for문으로 한 글자씩 꺼낼 수 있다.<span class="ox"><label><input type="radio" name="L3-o2" value="O"><span>O</span></label><label><input type="radio" name="L3-o2" value="X"><span>X</span></label></span><span class="mark" id="mk-L3-o2"></span></p></div><div class="q"><p class="qtext"><b>4.</b> for문 안에서도 break와 continue를 쓸 수 있다.<span class="ox"><label><input type="radio" name="L3-o3" value="O"><span>O</span></label><label><input type="radio" name="L3-o3" value="X"><span>X</span></label></span><span class="mark" id="mk-L3-o3"></span></p></div><div class="q"><p class="qtext"><b>5.</b> 반복 횟수를 미리 알 수 없을 때는 for문보다 while문이 더 알맞은 경우가 많다.<span class="ox"><label><input type="radio" name="L3-o4" value="O"><span>O</span></label><label><input type="radio" name="L3-o4" value="X"><span>X</span></label></span><span class="mark" id="mk-L3-o4"></span></p></div><div class="q"><p class="qtext"><b>6.</b> <span class="mono">[n * 2 for n in [1, 2, 3]]</span>의 결과는 [1, 2, 3, 1, 2, 3]이다.<span class="ox"><label><input type="radio" name="L3-o5" value="O"><span>O</span></label><label><input type="radio" name="L3-o5" value="X"><span>X</span></label></span><span class="mark" id="mk-L3-o5"></span></p></div><div class="btnrow"><button class="primary" onclick="grade(3,'o')">채점하기</button><span class="score" id="score-L3-o"></span></div></section><section><h2><span class="num">3</span>출력 결과 예상하기</h2><p class="hint">여러 줄이 출력되면 띄어쓰기로 구분해 적으세요. (예: 1 2 3)</p><div class="q"><p class="qtext"><b>1.</b> 출력 결과는?<span class="mark" id="mk-L3-p0"></span></p><pre class=""><span class="p">&gt;&gt;&gt; </span><span class="k">for</span> x <span class="k">in</span> [<span class="n">3</span>, <span class="n">6</span>, <span class="n">9</span>]:
+<span class="p">... </span>    <span class="b">print</span>(x * <span class="n">2</span>)
+<span class="p">... </span></pre><input type="text" class="ans wide mono" id="L3-p0" placeholder="출력 결과 (여러 줄이면 띄어쓰기로 구분)" autocomplete="off"><div class="sol" data-sol="L3-p">정답 <b class="mono">6 / 12 / 18</b> — 각 요소에 2를 곱해 출력.</div></div><div class="q"><p class="qtext"><b>2.</b> 출력 결과는?<span class="mark" id="mk-L3-p1"></span></p><pre class=""><span class="p">&gt;&gt;&gt; </span><span class="k">for</span> ch <span class="k">in</span> <span class="s">&quot;GOOD&quot;</span>:
+<span class="p">... </span>    <span class="k">if</span> ch == <span class="s">&quot;O&quot;</span>:
+<span class="p">... </span>        <span class="k">continue</span>
+<span class="p">... </span>    <span class="b">print</span>(ch)
+<span class="p">... </span></pre><input type="text" class="ans wide mono" id="L3-p1" placeholder="출력 결과 (여러 줄이면 띄어쓰기로 구분)" autocomplete="off"><div class="sol" data-sol="L3-p">정답 <b class="mono">G / D</b> — O일 때만 print를 건너뛴다.</div></div><div class="q"><p class="qtext"><b>3.</b> 출력 결과는?<span class="mark" id="mk-L3-p2"></span></p><pre class=""><span class="p">&gt;&gt;&gt; </span>total = <span class="n">0</span>
+<span class="p">&gt;&gt;&gt; </span><span class="k">for</span> i <span class="k">in</span> <span class="b">range</span>(<span class="n">1</span>, <span class="n">6</span>):
+<span class="p">... </span>    total += i
+<span class="p">... </span>
+<span class="p">&gt;&gt;&gt; </span>total</pre><input type="text" class="ans wide mono" id="L3-p2" placeholder="출력 결과 (여러 줄이면 띄어쓰기로 구분)" autocomplete="off"><div class="sol" data-sol="L3-p">정답 <b class="mono">15</b> — 1 + 2 + 3 + 4 + 5 (6은 미포함).</div></div><div class="q"><p class="qtext"><b>4.</b> 출력 결과는?<span class="mark" id="mk-L3-p3"></span></p><pre class=""><span class="p">&gt;&gt;&gt; </span>count = <span class="n">0</span>
+<span class="p">&gt;&gt;&gt; </span><span class="k">for</span> n <span class="k">in</span> <span class="b">range</span>(<span class="n">1</span>, <span class="n">21</span>):
+<span class="p">... </span>    <span class="k">if</span> n % <span class="n">4</span> == <span class="n">0</span>:
+<span class="p">... </span>        count += <span class="n">1</span>
+<span class="p">... </span>
+<span class="p">&gt;&gt;&gt; </span>count</pre><input type="text" class="ans wide mono" id="L3-p3" placeholder="출력 결과 (여러 줄이면 띄어쓰기로 구분)" autocomplete="off"><div class="sol" data-sol="L3-p">정답 <b class="mono">5</b> — 4, 8, 12, 16, 20 → 5개.</div></div><div class="q"><p class="qtext"><b>5.</b> 출력 결과는?<span class="mark" id="mk-L3-p4"></span></p><pre class=""><span class="p">&gt;&gt;&gt; </span><span class="k">for</span> i <span class="k">in</span> <span class="b">range</span>(<span class="n">10</span>):
+<span class="p">... </span>    <span class="k">if</span> i == <span class="n">3</span>:
+<span class="p">... </span>        <span class="k">break</span>
+<span class="p">... </span>    <span class="b">print</span>(i)
+<span class="p">... </span></pre><input type="text" class="ans wide mono" id="L3-p4" placeholder="출력 결과 (여러 줄이면 띄어쓰기로 구분)" autocomplete="off"><div class="sol" data-sol="L3-p">정답 <b class="mono">0 / 1 / 2</b> — i가 3이 되는 순간 반복 전체를 끝낸다.</div></div><div class="q"><p class="qtext"><b>6.</b> 출력 결과는?<span class="mark" id="mk-L3-p5"></span></p><pre class=""><span class="p">&gt;&gt;&gt; </span>[x <span class="k">for</span> x <span class="k">in</span> <span class="b">range</span>(<span class="n">1</span>, <span class="n">10</span>) <span class="k">if</span> x % <span class="n">3</span> == <span class="n">0</span>]</pre><input type="text" class="ans wide mono" id="L3-p5" placeholder="출력 결과 (여러 줄이면 띄어쓰기로 구분)" autocomplete="off"><div class="sol" data-sol="L3-p">정답 <b class="mono">[3, 6, 9]</b> — 1~9 중 3의 배수만 모은 리스트.</div></div><div class="btnrow"><button class="primary" onclick="grade(3,'p')">채점하기</button><button class="ghost" id="solbtn-L3-p" disabled onclick="showSol(3,'p')">정답 보기</button><span class="score" id="score-L3-p"></span></div></section><section><h2><span class="num">4</span>빈칸 채우기</h2><p class="hint">코드 속 빈칸에 알맞은 코드를 쓰세요.</p><div class="q"><p class="qtext"><b>1.</b> 1부터 <b>10까지</b> 출력합니다.</p><pre class=""><span class="p">&gt;&gt;&gt; </span><span class="k">for</span> i <span class="k">in</span> <span class="b">range</span>(<span class="n">1</span>, <input type="text" class="blank" id="L3-b0_0" style="width:8ch" autocomplete="off" spellcheck="false"><span class="mark" id="mk-L3-b0_0"></span>):
+<span class="p">... </span>    <span class="b">print</span>(i)
+<span class="p">... </span></pre><div class="sol" data-sol="L3-b">정답 <b class="mono">11</b> — 끝 수는 포함되지 않으므로 11</div></div><div class="q"><p class="qtext"><b>2.</b> names의 이름을 하나씩 꺼내 인사합니다.</p><pre class=""><span class="p">&gt;&gt;&gt; </span>names = [<span class="s">&quot;민준&quot;</span>, <span class="s">&quot;서연&quot;</span>, <span class="s">&quot;지호&quot;</span>]
+<span class="p">&gt;&gt;&gt; </span><span class="k">for</span> name <input type="text" class="blank" id="L3-b1_0" style="width:8ch" autocomplete="off" spellcheck="false"><span class="mark" id="mk-L3-b1_0"></span> names:
+<span class="p">... </span>    <span class="b">print</span>(<span class="s">f&quot;안녕, {name}!&quot;</span>)
+<span class="p">... </span></pre><div class="sol" data-sol="L3-b">정답 <b class="mono">in</b> — for 변수 in 리스트</div></div><div class="q"><p class="qtext"><b>3.</b> 5단을 출력합니다. (5 x 1 = 5 … 5 x 9 = 45)</p><pre class=""><span class="p">&gt;&gt;&gt; </span><span class="k">for</span> i <span class="k">in</span> <span class="b">range</span>(<span class="n">1</span>, <span class="n">10</span>):
+<span class="p">... </span>    <span class="b">print</span>(<span class="s">f&quot;5 x {i} = {<input type="text" class="blank" id="L3-b2_0" style="width:8ch" autocomplete="off" spellcheck="false"><span class="mark" id="mk-L3-b2_0"></span>}&quot;</span>)
+<span class="p">... </span></pre><div class="sol" data-sol="L3-b">정답 <b class="mono">5 * i</b> — 중괄호 안에서 곱셈 계산</div></div><div class="q"><p class="qtext"><b>4.</b> 1~5의 제곱을 리스트로 만듭니다. → [1, 4, 9, 16, 25]</p><pre class=""><span class="p">&gt;&gt;&gt; </span>[n * n <input type="text" class="blank" id="L3-b3_0" style="width:8ch" autocomplete="off" spellcheck="false"><span class="mark" id="mk-L3-b3_0"></span> n <span class="k">in</span> <span class="b">range</span>(<span class="n">1</span>, <span class="n">6</span>)]</pre><div class="sol" data-sol="L3-b">정답 <b class="mono">for</b> — 리스트 컴프리헨션의 for</div></div><div class="btnrow"><button class="primary" onclick="grade(3,'b')">채점하기</button><button class="ghost" id="solbtn-L3-b" disabled onclick="showSol(3,'b')">정답 보기</button><span class="score" id="score-L3-b"></span></div></section><section><h2><span class="num">5</span>코드 작성하기</h2><p class="hint">IDLE 셸에서 실행해 보고, 목표 출력이 나오면 코드를 아래 칸에 직접 입력하세요.</p><div class="task"><b>실습 A — 구구단 출력기</b><ul><li>for문과 range로 dan단을 1부터 9까지 출력한다</li><li>출력 형식은 f 문자열로 "7 x 1 = 7"</li><li>dan 값을 바꿔서 다른 단도 확인해 본다</li></ul></div><pre><span class="p">&gt;&gt;&gt; </span>dan = <span class="n">7</span></pre><pre><span class="c"># 목표 출력</span>
+<span class="o">7 x 1 = 7</span>
+<span class="o">7 x 2 = 14</span>
+<span class="o">7 x 3 = 21</span>
+<span class="o">7 x 4 = 28</span>
+<span class="o">7 x 5 = 35</span>
+<span class="o">7 x 6 = 42</span>
+<span class="o">7 x 7 = 49</span>
+<span class="o">7 x 8 = 56</span>
+<span class="o">7 x 9 = 63</span></pre><textarea id="L3-codeA" class="mono" spellcheck="false" placeholder="IDLE 셸에서 실행해 본 코드를 여기에 직접 입력하세요"></textarea><div class="subq"></div><div class="task"><b>실습 B — 최고 점수와 보충 인원 찾기</b><ul><li><span class="mono">max()</span>를 쓰지 말고 for와 if로 최고 점수를 찾는다</li><li>60점 미만인 학생 수도 함께 센다</li><li>반복이 끝난 뒤 두 결과를 출력한다</li></ul></div><pre><span class="p">&gt;&gt;&gt; </span>scores = [<span class="n">78</span>, <span class="n">92</span>, <span class="n">65</span>, <span class="n">88</span>, <span class="n">100</span>, <span class="n">54</span>, <span class="n">83</span>]</pre><pre><span class="c"># 목표 출력</span>
+<span class="o">최고 점수: 100</span>
+<span class="o">60점 미만: 1명</span></pre><textarea id="L3-codeB" class="mono" spellcheck="false" placeholder="IDLE 셸에서 실행해 본 코드를 여기에 직접 입력하세요"></textarea><div class="subq"></div><div class="task"><b>도전 — 2단부터 9단까지 전체 구구단</b><ul><li>이중 for문을 사용한다</li><li>각 단을 시작할 때 "[2단]"처럼 단 이름을 먼저 출력한다</li><li>모두 80줄이 출력되면 성공!</li></ul></div><pre><span class="c"># 목표 출력</span>
+<span class="o">[2단]</span>
+<span class="o">2 x 1 = 2</span>
+<span class="o">2 x 2 = 4</span>
+<span class="o">2 x 3 = 6</span>
+<span class="o">⋮</span>
+<span class="o">9 x 8 = 72</span>
+<span class="o">9 x 9 = 81</span></pre><textarea id="L3-codeC" class="mono" spellcheck="false" placeholder="IDLE 셸에서 실행해 본 코드를 여기에 직접 입력하세요"></textarea></section><section><h2><span class="num">6</span>03장 되새김 문제</h2><p class="hint">if · while · for를 모두 써 보는 종합 문제입니다. 시간이 부족하면 남은 문제는 과제로 해 오세요. (Q1·2·5·6 답은 자동 채점)</p><div class="q"><p class="qtext"><b>Q1.</b> [조건문 읽기] 다음 코드의 출력 결과는?</p><pre class=""><span class="p">&gt;&gt;&gt; </span>s = <span class="s">&quot;Python is easy and fun&quot;</span>
+<span class="p">&gt;&gt;&gt; </span><span class="k">if</span> <span class="s">&quot;hard&quot;</span> <span class="k">in</span> s:
+<span class="p">... </span>    <span class="b">print</span>(<span class="s">&quot;hard&quot;</span>)
+<span class="p">... </span><span class="k">elif</span> <span class="s">&quot;fun&quot;</span> <span class="k">in</span> s <span class="k">and</span> <span class="s">&quot;easy&quot;</span> <span class="k">not</span> <span class="k">in</span> s:
+<span class="p">... </span>    <span class="b">print</span>(<span class="s">&quot;fun&quot;</span>)
+<span class="p">... </span><span class="k">elif</span> <span class="s">&quot;boring&quot;</span> <span class="k">not</span> <span class="k">in</span> s:
+<span class="p">... </span>    <span class="b">print</span>(<span class="s">&quot;boring&quot;</span>)
+<span class="p">... </span><span class="k">elif</span> <span class="s">&quot;easy&quot;</span> <span class="k">in</span> s:
+<span class="p">... </span>    <span class="b">print</span>(<span class="s">&quot;easy&quot;</span>)
+<span class="p">... </span><span class="k">else</span>:
+<span class="p">... </span>    <span class="b">print</span>(<span class="s">&quot;none&quot;</span>)
+<span class="p">... </span></pre><p class="qtext">답 → <input type="text" class="ans mono" id="L3-r1" style="width:200px" placeholder="출력 결과" autocomplete="off"><span class="mark" id="mk-L3-r1"></span></p><div class="sol" data-sol="L3-r">정답 <b class="mono">boring</b> — "hard"가 없어 첫 조건 거짓, "easy"가 있어 두 번째도 거짓, "boring"이 <b>없으므로</b> 세 번째 조건이 참.</div></div><div class="q"><p class="qtext"><b>Q2.</b> [while문] 1부터 1000까지의 자연수 중 <b>3의 배수의 합</b>을 while문으로 구하세요.</p><p class="qtext">답 → <input type="text" class="ans mono" id="L3-r2" style="width:140px" placeholder="합" autocomplete="off"><span class="mark" id="mk-L3-r2"></span></p><textarea id="L3-rc2" class="mono" spellcheck="false" placeholder="코드를 직접 입력하세요"></textarea><div class="sol" data-sol="L3-r">정답 <b class="mono">166833</b></div></div><div class="q"><p class="qtext"><b>Q3.</b> [while문] while문으로 아래처럼 별을 출력하세요. (힌트: <span class="mono">"*" * 3</span> → <span class="mono">***</span>)</p><pre><span class="c"># 목표 출력</span>
+<span class="o">*</span>
+<span class="o">**</span>
+<span class="o">***</span>
+<span class="o">****</span>
+<span class="o">*****</span></pre><textarea id="L3-rc3" class="mono" spellcheck="false" placeholder="코드를 직접 입력하세요"></textarea></div><div class="q"><p class="qtext"><b>Q4.</b> [for문] for문과 range로 1부터 100까지의 숫자를 출력하세요.</p><textarea id="L3-rc4" class="mono" spellcheck="false" placeholder="코드를 직접 입력하세요"></textarea></div><div class="q"><p class="qtext"><b>Q5.</b> [for문] for문으로 아래 학급의 <b>평균 점수</b>를 구하세요. (힌트: 합계 ÷ 개수, 개수는 <span class="mono">len()</span>)</p><pre><span class="p">&gt;&gt;&gt; </span>scores = [<span class="n">72</span>, <span class="n">88</span>, <span class="n">95</span>, <span class="n">64</span>, <span class="n">81</span>, <span class="n">90</span>, <span class="n">70</span>, <span class="n">85</span>, <span class="n">77</span>, <span class="n">98</span>]</pre><p class="qtext">답 → <input type="text" class="ans mono" id="L3-r5" style="width:140px" placeholder="평균" autocomplete="off"><span class="mark" id="mk-L3-r5"></span></p><textarea id="L3-rc5" class="mono" spellcheck="false" placeholder="코드를 직접 입력하세요"></textarea><div class="sol" data-sol="L3-r">정답 <b class="mono">82.0</b> — 합계 820 ÷ 10</div></div><div class="q"><p class="qtext"><b>Q6.</b> [리스트 컴프리헨션] 아래 코드를 <b>한 줄</b>로 바꾸고, result의 값을 쓰세요.</p><pre class=""><span class="p">&gt;&gt;&gt; </span>nums = [<span class="n">1</span>, <span class="n">2</span>, <span class="n">3</span>, <span class="n">4</span>, <span class="n">5</span>, <span class="n">6</span>]
+<span class="p">&gt;&gt;&gt; </span>result = []
+<span class="p">&gt;&gt;&gt; </span><span class="k">for</span> n <span class="k">in</span> nums:
+<span class="p">... </span>    <span class="k">if</span> n % <span class="n">2</span> == <span class="n">0</span>:
+<span class="p">... </span>        result.<span class="b">append</span>(n * <span class="n">10</span>)
+<span class="p">... </span>
+<span class="p">&gt;&gt;&gt; </span>result</pre><p class="qtext">답 → <input type="text" class="ans mono" id="L3-r6" style="width:200px" placeholder="result 값" autocomplete="off"><span class="mark" id="mk-L3-r6"></span></p><textarea id="L3-rc6" class="mono" spellcheck="false" placeholder="코드를 직접 입력하세요"></textarea><div class="sol" data-sol="L3-r">정답 <b class="mono">[20, 40, 60]</b> — result = [n * 10 for n in nums if n % 2 == 0]</div></div><div class="btnrow"><button class="primary" onclick="grade(3,'r')">채점하기</button><button class="ghost" id="solbtn-L3-r" disabled onclick="showSol(3,'r')">정답 보기</button><span class="score" id="score-L3-r"></span></div></section><section><h2><span class="num">7</span>정리 질문 · 결과 보기</h2><p class="hint">03장 제어문 전체를 돌아보며 정리해 보세요.</p><div class="q"><p class="qtext"><b>Q1.</b> while문과 for문은 각각 어떤 상황에 쓰면 좋을까요? 예를 하나씩 들어 쓰세요.</p><textarea id="L3-wr1"></textarea></div><div class="q"><p class="qtext"><b>Q2.</b> <span class="mono">range(1, 10)</span>에 10이 포함되지 않는다는 점을 생각하면, 1부터 N까지 반복하려면 range를 어떻게 써야 할까요?</p><textarea id="L3-wr2"></textarea></div><div class="q"><p class="qtext"><b>Q3.</b> 3차시 동안 배운 if · while · for 중 가장 어려웠던 것과 그 이유, 그리고 어떻게 해결했는지 쓰세요.</p><textarea id="L3-wr3"></textarea></div><div class="btnrow"><button class="primary" onclick="showResult(3)">결과 보기</button><button class="ghost" onclick="clearLesson(3)">이 차시 답 지우기</button></div><div class="result" id="L3-result"></div><p class="note">[결과 보기]를 누르면 모든 문항이 한꺼번에 채점되고 이 차시 결과가 정리됩니다. 입력한 답은 이 컴퓨터의 브라우저에 자동 저장돼요.</p></section><div class="pager"><button class="ghost" onclick="go(2)">← 2차시</button><span></span></div><p class="lfoot">참고: 점프 투 파이썬 03-3 for문 (wikidocs.net/22) · 03장 되새김 문제 (교재 문제를 변형해 수록)</p></div>
+<footer>참고: 점프 투 파이썬 02-8 변수 (wikidocs.net/18) · 03장 프로그램의 구조를 쌓는다! 제어문 (wikidocs.net/20~22)</footer>
+</div>
+<script>
+/* ===================================================================
+   파이썬 제어문 학습지 (1~3차시) — 자동 채점 · 결과 보기 · 자동 저장
+   =================================================================== */
+const CONFS = {"1": {"sections": {"m": {"title": "짝짓기", "items": [{"id": "L1-m0", "kind": "select", "ans": ["2"], "no": 1}, {"id": "L1-m1", "kind": "select", "ans": ["3"], "no": 2}, {"id": "L1-m2", "kind": "select", "ans": ["0"], "no": 3}, {"id": "L1-m3", "kind": "select", "ans": ["6"], "no": 4}, {"id": "L1-m4", "kind": "select", "ans": ["5"], "no": 5}, {"id": "L1-m5", "kind": "select", "ans": ["4"], "no": 6}, {"id": "L1-m6", "kind": "select", "ans": ["1"], "no": 7}, {"id": "L1-m7", "kind": "select", "ans": ["9"], "no": 8}]}, "o": {"title": "O/X", "items": [{"id": "L1-o0", "kind": "ox", "ans": ["X"], "no": 1}, {"id": "L1-o1", "kind": "ox", "ans": ["X"], "no": 2}, {"id": "L1-o2", "kind": "ox", "ans": ["O"], "no": 3}, {"id": "L1-o3", "kind": "ox", "ans": ["O"], "no": 4}, {"id": "L1-o4", "kind": "ox", "ans": ["X"], "no": 5}, {"id": "L1-o5", "kind": "ox", "ans": ["X"], "no": 6}, {"id": "L1-o6", "kind": "ox", "ans": ["O"], "no": 7}]}, "p": {"title": "출력 결과 예상", "items": [{"id": "L1-p0", "kind": "pred", "ans": ["홀수"], "no": 1}, {"id": "L1-p1", "kind": "pred", "ans": ["입장 불가"], "no": 2}, {"id": "L1-p2", "kind": "pred", "ans": ["야외 수업 취소"], "no": 3}, {"id": "L1-p3", "kind": "pred", "ans": ["영"], "no": 4}, {"id": "L1-p4", "kind": "pred", "ans": ["C 이상"], "no": 5}, {"id": "L1-p5", "kind": "pred", "ans": ["없는 메뉴입니다"], "no": 6}]}, "b": {"title": "빈칸 채우기", "items": [{"id": "L1-b0_0", "kind": "blank", "ans": ["=="], "no": 1}, {"id": "L1-b1_0", "kind": "blank", "ans": [":"], "no": 2}, {"id": "L1-b2_0", "kind": "blank", "ans": ["elif"], "no": 3}, {"id": "L1-b3_0", "kind": "blank", "ans": ["and"], "no": 4}, {"id": "L1-b4_0", "kind": "blank", "ans": ["in"], "no": 5}]}}, "texts": [["실습A", "L1-codeA"], ["실습B", "L1-codeB"], ["도전", "L1-codeC"], ["정리1", "L1-wr1"], ["정리2", "L1-wr2"], ["정리3", "L1-wr3"]]}, "2": {"sections": {"m": {"title": "짝짓기", "items": [{"id": "L2-m0", "kind": "select", "ans": ["5"], "no": 1}, {"id": "L2-m1", "kind": "select", "ans": ["6"], "no": 2}, {"id": "L2-m2", "kind": "select", "ans": ["7"], "no": 3}, {"id": "L2-m3", "kind": "select", "ans": ["3"], "no": 4}, {"id": "L2-m4", "kind": "select", "ans": ["4"], "no": 5}, {"id": "L2-m5", "kind": "select", "ans": ["2"], "no": 6}]}, "o": {"title": "O/X", "items": [{"id": "L2-o0", "kind": "ox", "ans": ["X"], "no": 1}, {"id": "L2-o1", "kind": "ox", "ans": ["O"], "no": 2}, {"id": "L2-o2", "kind": "ox", "ans": ["O"], "no": 3}, {"id": "L2-o3", "kind": "ox", "ans": ["X"], "no": 4}, {"id": "L2-o4", "kind": "ox", "ans": ["O"], "no": 5}, {"id": "L2-o5", "kind": "ox", "ans": ["O"], "no": 6}]}, "t": {"title": "실행 흐름 표", "items": [{"id": "L2-t2b", "kind": "num", "ans": ["2"], "no": null}, {"id": "L2-t2t", "kind": "num", "ans": ["3"], "no": null}, {"id": "L2-t2a", "kind": "num", "ans": ["3"], "no": null}, {"id": "L2-t3b", "kind": "num", "ans": ["3"], "no": null}, {"id": "L2-t3t", "kind": "num", "ans": ["6"], "no": null}, {"id": "L2-t3a", "kind": "num", "ans": ["4"], "no": null}, {"id": "L2-t4b", "kind": "num", "ans": ["4"], "no": null}, {"id": "L2-t4t", "kind": "num", "ans": ["10"], "no": null}, {"id": "L2-t4a", "kind": "num", "ans": ["5"], "no": null}, {"id": "L2-tfi", "kind": "num", "ans": ["5"], "no": null}, {"id": "L2-tft", "kind": "num", "ans": ["10"], "no": null}, {"id": "L2-tfn", "kind": "num", "ans": ["4"], "no": null}]}, "p": {"title": "출력 결과 예상", "items": [{"id": "L2-p0", "kind": "pred", "ans": ["3 2 1"], "no": 1}, {"id": "L2-p1", "kind": "pred", "ans": ["32"], "no": 2}, {"id": "L2-p2", "kind": "pred", "ans": ["끝"], "no": 3}, {"id": "L2-p3", "kind": "pred", "ans": ["12"], "no": 4}, {"id": "L2-p4", "kind": "pred", "ans": ["1 2 4 5 6"], "no": 5}, {"id": "L2-p5", "kind": "pred", "ans": ["6"], "no": 6}]}, "b": {"title": "빈칸 채우기", "items": [{"id": "L2-b0_0", "kind": "blank", "ans": ["i += 1", "i = i + 1"], "no": 1}, {"id": "L2-b1_0", "kind": "blank", "ans": ["<="], "no": 2}, {"id": "L2-b2_0", "kind": "blank", "ans": ["break"], "no": 3}, {"id": "L2-b3_0", "kind": "blank", "ans": ["continue"], "no": 4}]}}, "texts": [["실습A", "L2-codeA"], ["실습B", "L2-codeB"], ["도전", "L2-codeC"], ["정리1", "L2-wr1"], ["정리2", "L2-wr2"], ["정리3", "L2-wr3"]]}, "3": {"sections": {"m": {"title": "짝짓기", "items": [{"id": "L3-m0", "kind": "select", "ans": ["1"], "no": 1}, {"id": "L3-m1", "kind": "select", "ans": ["5"], "no": 2}, {"id": "L3-m2", "kind": "select", "ans": ["7"], "no": 3}, {"id": "L3-m3", "kind": "select", "ans": ["3"], "no": 4}, {"id": "L3-m4", "kind": "select", "ans": ["2"], "no": 5}, {"id": "L3-m5", "kind": "select", "ans": ["6"], "no": 6}]}, "o": {"title": "O/X", "items": [{"id": "L3-o0", "kind": "ox", "ans": ["O"], "no": 1}, {"id": "L3-o1", "kind": "ox", "ans": ["X"], "no": 2}, {"id": "L3-o2", "kind": "ox", "ans": ["O"], "no": 3}, {"id": "L3-o3", "kind": "ox", "ans": ["O"], "no": 4}, {"id": "L3-o4", "kind": "ox", "ans": ["O"], "no": 5}, {"id": "L3-o5", "kind": "ox", "ans": ["X"], "no": 6}]}, "p": {"title": "출력 결과 예상", "items": [{"id": "L3-p0", "kind": "pred", "ans": ["6 12 18"], "no": 1}, {"id": "L3-p1", "kind": "pred", "ans": ["G D"], "no": 2}, {"id": "L3-p2", "kind": "pred", "ans": ["15"], "no": 3}, {"id": "L3-p3", "kind": "pred", "ans": ["5"], "no": 4}, {"id": "L3-p4", "kind": "pred", "ans": ["0 1 2"], "no": 5}, {"id": "L3-p5", "kind": "pred", "ans": ["[3, 6, 9]"], "no": 6}]}, "b": {"title": "빈칸 채우기", "items": [{"id": "L3-b0_0", "kind": "blank", "ans": ["11"], "no": 1}, {"id": "L3-b1_0", "kind": "blank", "ans": ["in"], "no": 2}, {"id": "L3-b2_0", "kind": "blank", "ans": ["5 * i", "i * 5"], "no": 3}, {"id": "L3-b3_0", "kind": "blank", "ans": ["for"], "no": 4}]}, "r": {"title": "03장 되새김", "items": [{"id": "L3-r1", "kind": "pred", "ans": ["boring"], "no": 1}, {"id": "L3-r2", "kind": "num", "ans": ["166833"], "no": 2}, {"id": "L3-r5", "kind": "num", "ans": ["82.0", "82"], "no": 5}, {"id": "L3-r6", "kind": "pred", "ans": ["[20, 40, 60]"], "no": 6}]}}, "texts": [["실습A", "L3-codeA"], ["실습B", "L3-codeB"], ["도전", "L3-codeC"], ["되새김Q2코드", "L3-rc2"], ["되새김Q3코드", "L3-rc3"], ["되새김Q4코드", "L3-rc4"], ["되새김Q5코드", "L3-rc5"], ["되새김Q6코드", "L3-rc6"], ["정리1", "L3-wr1"], ["정리2", "L3-wr2"], ["정리3", "L3-wr3"]]}};
+const STORE_KEY = "py-control-ws-v1";
+const SCORES = {1:{}, 2:{}, 3:{}};
+let CUR = 1, STATE = {graded:{}, result:{}, last:1}, SAVE_OFF = false;
+
+/* ---------- 저장소 (실패해도 학습지는 그대로 동작) ---------- */
+function loadStore(){ try { return JSON.parse(localStorage.getItem(STORE_KEY)) || null; } catch(e){ return null; } }
+function writeStore(d){ try { localStorage.setItem(STORE_KEY, JSON.stringify(d)); } catch(e){} }
+function removeStore(){ try { localStorage.removeItem(STORE_KEY); } catch(e){} }
+
+function collect(){
+ const d = {v:{}, c:{}, graded:STATE.graded, result:STATE.result, last:CUR};
+ document.querySelectorAll('input[type=text], textarea, select').forEach(el=>{ if(el.id && el.value) d.v[el.id]=el.value; });
+ document.querySelectorAll('input[type=radio]:checked').forEach(el=>{ d.c[el.name]=el.value; });
+ document.querySelectorAll('input[type=checkbox]').forEach(el=>{ if(el.id && el.checked) d.c[el.id]=true; });
+ return d;
+}
+let saveTimer=null;
+function save(){
+ if(SAVE_OFF) return;
+ clearTimeout(saveTimer);
+ saveTimer = setTimeout(()=>writeStore(collect()), 250);
+}
+function restore(){
+ const d = loadStore(); if(!d) return;
+ Object.entries(d.v||{}).forEach(([id,val])=>{ const el=document.getElementById(id); if(el) el.value=val; });
+ Object.entries(d.c||{}).forEach(([k,val])=>{
+  if(val===true){ const el=document.getElementById(k); if(el) el.checked=true; return; }
+  const r=document.querySelector(`input[name="${k}"][value="${val}"]`);
+  if(r){ r.checked=true; r.parentElement.classList.add('sel'); }
+ });
+ STATE.graded = d.graded || {}; STATE.result = d.result || {}; STATE.last = d.last || 1;
+ Object.keys(STATE.graded).forEach(k=>{ const [L,key]=k.split(":"); if(CONFS[L] && CONFS[L].sections[key]) grade(+L, key, true); });
+ Object.keys(STATE.result).forEach(L=>{ if(CONFS[L]) showResult(+L, true); });
+}
+document.addEventListener('input', save);
+document.addEventListener('change', save);
+
+/* ---------- 차시 이동 ---------- */
+function go(L, scroll=true){
+ L = +L; if(![1,2,3].includes(L)) L = 1;
+ CUR = L;
+ document.querySelectorAll('.lesson').forEach(s=>s.hidden = (s.dataset.l !== String(L)));
+ document.querySelectorAll('.navbtn').forEach(b=>b.classList.toggle('on', b.dataset.l === String(L)));
+ try { history.replaceState(null, "", "#" + L); } catch(e){}
+ if(scroll) window.scrollTo({top:0});
+ save();
+}
+window.addEventListener('hashchange', ()=>go(location.hash.slice(1)));
+
+/* ---------- O/X 선택 표시 ---------- */
+document.querySelectorAll('.ox input').forEach(r=>{
+ r.addEventListener('change', ()=>{
+  document.querySelectorAll(`input[name="${r.name}"]`).forEach(x=>x.parentElement.classList.toggle('sel', x.checked));
+ });
+});
+
+/* ---------- 붙여넣기 차단 ---------- */
+["paste","drop"].forEach(ev=>{
+ document.addEventListener(ev, e=>{
+  const t=e.target.tagName;
+  if(t==="INPUT"||t==="TEXTAREA"){ e.preventDefault(); alert("붙여넣기는 사용할 수 없습니다. 직접 입력해 주세요."); }
+ }, true);
+});
+
+/* ---------- 텍스트 칸에서 Tab 키 = 공백 4칸 ---------- */
+document.querySelectorAll('textarea').forEach(ta=>{
+ ta.addEventListener('keydown', e=>{
+  if(e.key==="Tab"){
+   e.preventDefault();
+   const s=ta.selectionStart, en=ta.selectionEnd;
+   ta.value = ta.value.slice(0,s) + "    " + ta.value.slice(en);
+   ta.selectionStart = ta.selectionEnd = s+4; save();
+  }
+ });
+});
+
+/* ---------- 채점 ---------- */
+function setMark(id, ok){
+ const el=document.getElementById(id); if(!el) return;
+ el.textContent = ok ? "○" : "✗";
+ el.className = "mark " + (ok ? "ok" : "no");
+}
+function squash(s){ return String(s).replace(/\s+/g,""); }
+function normP(s){ return String(s).toLowerCase().replace(/['"`\[\]]/g,"").replace(/[,\s→]+/g," ").trim(); }
+function predEq(a, v){
+ const na=normP(a), nv=normP(v);
+ if(!nv) return false;
+ if(na===nv) return true;
+ return /[가-힣]/.test(na) && na.replace(/ /g,"")===nv.replace(/ /g,"");
+}
+function check(it){
+ if(it.kind==="ox"){ const sel=document.querySelector(`input[name="${it.id}"]:checked`); return !!sel && sel.value===it.ans[0]; }
+ const el=document.getElementById(it.id); const v = el ? el.value : "";
+ if(it.kind==="select") return v!=="" && v===String(it.ans[0]);
+ if(it.kind==="blank")  return v.trim()!=="" && it.ans.some(a=>squash(a)===squash(v));
+ return it.ans.some(a=>predEq(a, v));
+}
+function grade(L, key, quiet){
+ const sec=CONFS[L].sections[key];
+ let sc=0; const wrong=[];
+ sec.items.forEach(it=>{ const ok=check(it); setMark("mk-"+it.id, ok); if(ok) sc++; else wrong.push(it.no); });
+ SCORES[L][key] = {sc, n:sec.items.length, wrong};
+ document.getElementById(`score-L${L}-${key}`).textContent = `${sc} / ${sec.items.length}`;
+ const sb=document.getElementById(`solbtn-L${L}-${key}`); if(sb) sb.disabled=false;
+ STATE.graded[`${L}:${key}`] = 1;
+ if(!quiet) save();
+}
+function showSol(L, key){ document.querySelectorAll(`[data-sol="L${L}-${key}"]`).forEach(e=>e.classList.add("show")); }
+
+/* ---------- 결과 보기 ---------- */
+function esc(s){ return String(s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;"); }
+function showResult(L, quiet){
+ const C=CONFS[L]; let total=0, full=0; const rows=[];
+ Object.keys(C.sections).forEach(k=>{
+  grade(L, k, true);
+  const r=SCORES[L][k], sec=C.sections[k];
+  total+=r.sc; full+=r.n;
+  let w = "—";
+  if(r.wrong.length){ w = r.wrong.every(x=>x===null) ? `${r.wrong.length}칸` : r.wrong.map(x=>x+"번").join(", "); }
+  rows.push(`<tr><td>${sec.title}</td><td class="c">${r.sc} / ${r.n}</td><td>${w}</td></tr>`);
+ });
+ const pct = full ? Math.round(total/full*100) : 0;
+ const tries=document.querySelectorAll(`.lesson[data-l="${L}"] .tryck`);
+ const tried=[...tries].filter(c=>c.checked).length;
+ const written = C.texts.map(([label,id])=>{
+  const ok=document.getElementById(id).value.trim()!=="";
+  return `<span class="wchip ${ok?'ok':''}">${ok?'✔':'·'} ${esc(label)}</span>`;
+ }).join("");
+ const cls=document.getElementById("stuClass").value.trim(), no=document.getElementById("stuNo").value.trim(), nm=document.getElementById("stuName").value.trim();
+ const who = [cls, no && no+"번", nm].filter(Boolean).join(" ") || "이름 미입력";
+ const msg = pct===100 ? "완벽해요! 도전 문제까지 해 봤다면 오늘 내용은 확실히 내 것입니다." :
+             pct>=80 ? "잘했어요! 틀린 문항은 각 활동의 [정답 보기]로 확인하고 IDLE 셸에서 직접 실행해 보세요." :
+             pct>=50 ? "절반 넘게 맞혔어요. 틀린 문항의 해설을 읽고, 개념 상자의 예제를 다시 따라 쳐 보세요." :
+                       "개념 상자의 예제를 IDLE 셸에서 하나씩 다시 따라 친 뒤, 활동을 다시 풀어 보세요.";
+ document.getElementById(`L${L}-result`).innerHTML = `
+  <div class="rcard">
+   <div class="rhead"><b>${L}차시 결과</b><span>${esc(who)} · ${new Date().toLocaleString("ko-KR")}</span></div>
+   <div class="rbig">${total} <small>/ ${full}</small><em>${pct}%</em></div>
+   <div class="rbar"><i style="width:${pct}%"></i></div>
+   <table class="tbl"><thead><tr><th>활동</th><th>점수</th><th>틀린 문항</th></tr></thead><tbody>${rows.join("")}</tbody></table>
+   <p class="rline"><b>개념 따라 하기</b> ${tried} / ${tries.length}</p>
+   <p class="rline"><b>직접 쓴 코드·글</b> ${written}</p>
+   <p class="rmsg">${msg}</p>
+  </div>`;
+ const badge=document.getElementById(`badge-${L}`); if(badge) badge.textContent = `${pct}%`;
+ STATE.result[L]=1;
+ if(!quiet){ save(); document.getElementById(`L${L}-result`).scrollIntoView({behavior:"smooth", block:"center"}); }
+}
+
+/* ---------- 지우기 ---------- */
+function clearLesson(L){
+ if(!confirm(`${L}차시에 입력한 답을 모두 지울까요?\n(이 컴퓨터에 저장된 ${L}차시 답도 함께 지워집니다)`)) return;
+ const box=document.querySelector(`.lesson[data-l="${L}"]`);
+ box.querySelectorAll('input[type=text], textarea').forEach(el=>el.value="");
+ box.querySelectorAll('select').forEach(el=>el.value="");
+ box.querySelectorAll('input[type=radio], input[type=checkbox]').forEach(el=>{ el.checked=false; el.parentElement.classList.remove('sel'); });
+ box.querySelectorAll('.mark').forEach(el=>{ el.textContent=""; el.className="mark"; });
+ box.querySelectorAll('.score').forEach(el=>el.textContent="");
+ box.querySelectorAll('.sol').forEach(el=>el.classList.remove("show"));
+ box.querySelectorAll('[id^="solbtn-"]').forEach(el=>el.disabled=true);
+ document.getElementById(`L${L}-result`).innerHTML="";
+ const badge=document.getElementById(`badge-${L}`); if(badge) badge.textContent="";
+ Object.keys(STATE.graded).forEach(k=>{ if(k.startsWith(L+":")) delete STATE.graded[k]; });
+ delete STATE.result[L]; SCORES[L]={};
+ writeStore(collect());
+ window.scrollTo({top:0});
+}
+function clearAll(){
+ if(!confirm("1~3차시의 모든 답과 이름을 지우고 처음 상태로 돌아갈까요?\n(다음 사람이 이 컴퓨터를 쓸 때 사용하세요)")) return;
+ SAVE_OFF = true; removeStore();
+ location.hash = "1"; location.reload();
+}
+
+/* ---------- 시작 ---------- */
+restore();
+go(location.hash ? location.hash.slice(1) : STATE.last, false);
+
+</script>
+</body>
+</html>
